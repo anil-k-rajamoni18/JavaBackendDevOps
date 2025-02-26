@@ -40,15 +40,15 @@ public class Example {
             .forEach(System.out::println); // name -> System.out.println(name)
         
 
-            // optional 
-            Optional<String> name = Optional.ofNullable(getName());
-            System.out.println(name.isPresent());
-            System.out.println(name.orElse("Default Name"));
+        // optional 
+        Optional<String> name = Optional.ofNullable(getName());
+        System.out.println(name.isPresent());
+        System.out.println(name.orElse("Default Name"));
 
-            LocalDate today = LocalDate.now();
-            System.out.println(today);
-            LocalDate tomorrow = today.plusDays(1);
-            System.out.println("Tomorrow's date: " + tomorrow);
+        LocalDate today = LocalDate.now();
+        System.out.println(today);
+        LocalDate tomorrow = today.plusDays(1);
+        System.out.println("Tomorrow's date: " + tomorrow);
 
     }
 
