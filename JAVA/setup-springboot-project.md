@@ -22,7 +22,6 @@ b) Configure Your Project:
         Java Version: Choose your JDK version (e.g., 11 or 17).
 
 c) Add Dependencies:
-
     Add the required dependencies for your project. For example:
 
         Spring Web: For building web applications (RESTful APIs).
@@ -31,27 +30,27 @@ c) Add Dependencies:
         H2 Database: For an in-memory database (optional).
 
 d) Generate the Project:
-    Click Generate to download a .zip file containing your project.
+        Click Generate to download a .zip file containing your project.
 
 e) Import the Project:
-    Extract the .zip file and import it into your IDE:
-    IntelliJ IDEA: File > Open and select the project folder.
-    Eclipse: File > Import > Maven/Gradle > Existing Project.
+        Extract the .zip file and import it into your IDE:
+        IntelliJ IDEA: File > Open and select the project folder.
+        Eclipse: File > Import > Maven/Gradle > Existing Project.
 
 
 ## Spring Boot Project Architecture and Structure
 
 1. Overview of Spring Boot Project Architecture
 Spring Boot follows a layered architecture that promotes separation of concerns and modularity. The key layers are:
-    Presentation Layer: Handles HTTP requests and responses (e.g., REST controllers).
-    Service Layer: Contains business logic and application services.
-    Data Access Layer: Manages interactions with the database or other data sources.
-    Integration Layer: Handles communication with external systems (e.g., APIs, messaging systems).
+        a) Presentation Layer: Handles HTTP requests and responses (e.g., REST controllers).
+        b) Service Layer: Contains business logic and application services.
+        c) Data Access Layer: Manages interactions with the database or other data sources.
+        d) Integration Layer: Handles communication with external systems (e.g., APIs, messaging systems).
 
 2. Standard Spring Boot Project Structure
     A well-organized Spring Boot project follows a standard directory structure. Below is an example:
 
-    my-spring-boot-app/
+    ```my-spring-boot-app/
     ├── src/
     │   ├── main/
     │   │   ├── java/                  # Java source code
@@ -74,9 +73,9 @@ Spring Boot follows a layered architecture that promotes separation of concerns 
     │           └── com/example/myapp/ # Unit and integration tests
     ├── pom.xml                        # Maven build configuration (or build.gradle for Gradle)
     └── README.md                      # Project documentation
+    ```
 
-
-### 3. Key Components of a Spring Boot Project
+### Key Components of a Spring Boot Project
 1. Main Application Class
 The entry point of the Spring Boot application.
     Annotated with @SpringBootApplication, which combines:
