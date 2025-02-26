@@ -22,7 +22,6 @@ b) Configure Your Project:
         Java Version: Choose your JDK version (e.g., 11 or 17).
 
 c) Add Dependencies:
-
     Add the required dependencies for your project. For example:
 
         Spring Web: For building web applications (RESTful APIs).
@@ -31,11 +30,17 @@ c) Add Dependencies:
         H2 Database: For an in-memory database (optional).
 
 d) Generate the Project:
+<<<<<<< HEAD
 
         Click Generate to download a .zip file containing your project.
 
 e) Import the Project:
 
+=======
+        Click Generate to download a .zip file containing your project.
+
+e) Import the Project:
+>>>>>>> 0e615ae (update)
         Extract the .zip file and import it into your IDE:
         IntelliJ IDEA: File > Open and select the project folder.
         Eclipse: File > Import > Maven/Gradle > Existing Project.
