@@ -1,4 +1,6 @@
+import java.util.Random;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 interface Greet {
     String greetUser(final String msg);
@@ -14,5 +16,11 @@ public class Sample {
 
         Predicate<Integer> voteEligiblePredicate = (age) -> age >= 18;
         System.out.println(voteEligiblePredicate.test(19));
+
+        Supplier<Integer> otpGenerator = () -> {
+            Random random = new Random();
+            return 100000  + random.nextInt(900000);
+        };
+        System.out.println(otpGenerator.get());
     }
 }
