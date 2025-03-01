@@ -8,3 +8,5 @@ print(nums)
 
 colors = {"red", "green", "blue"}
 print(colors)
+names = {"Radhika", "varsha", "charan"}
+print(list(names).sort())
