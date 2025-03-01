@@ -186,3 +186,119 @@ Flow:
         git worktree remove ../feature-branch  # Clean up
 
 8. Advanced Diff & Log
+
+
+
+### Excercise
+
+1. Initialize a Git Repository
+    Navigate to your git-demo folder and initialize a Git repository:
+        cd git-demo
+        git init
+    
+    Create 3 files and add some content:
+        - Example.py
+        - Sample.java
+        - version.yml 
+
+2. Check the Status of the Repository
+    git status
+    You should see the three files as untracked files.
+    
+3. Add Files to the Staging Area
+    git add Example.java Sample.py version.yml 
+
+4. Commit the Changes
+    git commit -m "Initial commit: Added py java yml files"
+
+5. Check the Commit History
+    git log
+
+6. Create a New Branch
+    Create a new branch called feature-branch:
+        git branch feature-branch
+
+7. Switch to the New Branch
+    Switch to the feature-branch:
+        git checkout feature-branch
+    
+    Alternatively, you can create and switch to the branch in one command:
+        git checkout -b feature-branch
+
+8. Push the changes:
+    git push -u origin feature-branch
+
+10. Merge Changes Back to the Main Branch
+    Switch back to the main branch and merge the changes from feature-branch:
+        git checkout main
+        git merge feature-branch
+
+11. View Differences Between Branches
+    View the differences between the main branch and feature-branch:
+        git diff main feature-branch
+    
+12. Push Changes to a Remote Repository
+    If you have a remote repository (e.g., on GitHub), add the remote and push your changes:
+    
+    git remote add origin <remote-repository-URL>
+    git push -u origin main
+
+
+14. Pull Changes from a Remote Repository
+    If there are changes in the remote repository, pull them to your local repository:
+        git pull origin main
+
+15. Revert Changes
+    If you want to undo the last commit (but keep the changes in your working directory):
+        git reset --soft HEAD~1
+    If you want to completely discard the last commit:
+        git reset --hard HEAD~1
+
+16. Stash Changes
+    If you want to temporarily save changes without committing them:
+        git stash
+    To reapply the stashed changes:
+        git stash apply
+
+
+17. Tag a Commit
+    Create a tag for a specific commit (e.g., for a release):
+        git tag v1.0
+    Push the tag to the remote repository:
+        git push origin v1.0
+
+18. Clone a Repository
+    If you want to clone your repository to another location:
+        git clone <remote-repository-URL>
+
+
+19. Delete a Branch
+    Delete the feature-branch after merging:
+        git branch -d feature-branch
+
+20. Checkout a Specific Commit
+    Checkout a specific commit using its hash (from git log):
+        git checkout <commit-hash>
+
+21. Rebase a Branch
+    If you want to rebase feature-branch onto main:
+    
+        git checkout feature-branch
+        git rebase main
+
+22. View Remote Repositories
+    View the list of remote repositories:
+        git remote -v
+
+23. Fetch Changes from Remote
+    Fetch changes from the remote repository without merging:
+        git fetch origin
+
+24. Rename a Branch
+    Rename the current branch:
+        git branch -m new-branch-name
+
+25. Delete a Remote Branch
+    Delete a branch on the remote repository:
+        git push origin --delete branch-name
+        

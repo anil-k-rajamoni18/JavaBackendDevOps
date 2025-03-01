@@ -50,6 +50,10 @@ public class Example {
         LocalDate tomorrow = today.plusDays(1);
         System.out.println("Tomorrow's date: " + tomorrow);
 
+
+
+        
+
     }
 
     public static String getName() {
