@@ -51,7 +51,7 @@ Configure Git:
     Repository: Committed changes stored permanently (.git directory).
 
 Flow:
-    Working Directory → git add → Staging Area → git commit → Local Repository -> git push -> Remote Repo
+    Working Directory → git add → Staging Area → git commit → Repository
 
 ### 5. Branching & Merging
 
@@ -172,30 +172,11 @@ Flow:
 
 6. Advanced Merging
 
-    1. Fast-Forward Merge:
-
-        Happens when the current branch is directly ahead of the branch you're merging, with no diverging commits.
-        Example: git merge feature (if master has no new commits since feature was created).
-
-    2. Three-Way Merge:
-
-        Occurs when the branches being merged have diverged, and Git needs to combine their changes.
-        Example: git merge feature (if master and feature have separate commits).
-
-    3. Recursive Merge:
-
-        Git’s default merge strategy, combining the changes of two branches by using their common ancestor.
-        Example: git merge feature (with multiple divergent commits on both branches).
-
-    4. Octopus Merge:
-
-        Used to merge more than two branches at once.
-        Example: git merge feature1 feature2 feature3.
-
-    5. Merge with Conflicts:
-
-        Happens when Git can't automatically resolve changes between branches, requiring manual intervention.
-        Example: git merge feature (if there are conflicting changes in both branches).
+    - Octopus Merge: Merge multiple branches in one commit.
+        git merge branch1 branch2 branch3
+    
+    - Merge with Strategies:
+        git merge -s ours/theirs  # Resolve conflicts by favoring one side
 
 7. Worktree (git worktree)
     
