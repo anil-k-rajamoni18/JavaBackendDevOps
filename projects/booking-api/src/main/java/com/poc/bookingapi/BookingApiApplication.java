@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
 @SpringBootApplication
-@EnableCaching
 public class BookingApiApplication {
 
 	@Autowired
@@ -27,11 +25,11 @@ public class BookingApiApplication {
 	public CommandLineRunner runner() {
 		return args -> {
 			Book book1 = new Book();
-			book1.setBookName("The Great Adventure");
-			book1.setPrice(19.99);
-			book1.setDescription("An exciting journey through unexplored lands.");
-			book1.setPublicationDate(LocalDate.of(2020, 5, 10));
-			book1.setAuthor("John Doe");
+			book1.setBookName("Spring Boot in Action");
+			book1.setPrice(45.99);
+			book1.setDescription("A comprehensive guide to Spring Boot");
+			book1.setAuthor("Craig Walls");
+			book1.setPublicationDate(LocalDate.of(2024, 1, 1));
 
 			Book book2 = new Book();
 			book2.setBookName("Mystery in the Shadows");

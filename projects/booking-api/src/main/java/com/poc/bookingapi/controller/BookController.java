@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     @Autowired
-    private BookService bookService;
+    private BookService bookService;  // field injection
 
     //get the book by id
     @Operation(
