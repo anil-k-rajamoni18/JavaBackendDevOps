@@ -39,6 +39,19 @@ Linux file permissions determine who can read, write, or execute a file.
     w: Write permission (modify the file).
     x: Execute permission (run the file as a program).
 
+- Three levels of permissions 
+    - Owner (u) 
+    - Group (g)
+    - Other (o)
+
+  Example: rwxr-x---
+    Owner: rwx
+    Group: r-x
+    Other: ---
+
+    -rw-r--r--
+
+
 chmod – Change file permissions.
 
     chmod +x file_name: Adds execute permission.
@@ -59,92 +72,96 @@ Understanding Permission Codes:
 
 
 ### 3. File Manipulation
-cat – Display file content.
+    cat – Display file content.
 
-cat file_name: Shows file content.
-less – View large files interactively.
+        cat file_name: Shows file content.
+    
+    less – View large files interactively.
+        less file_name: Allows scrolling and searching in a file.
+    
+    head – Show the first few lines of a file.
+        head file_name: Displays the first 10 lines by default.
+    
+    tail – Show the last few lines of a file.
 
-less file_name: Allows scrolling and searching in a file.
-head – Show the first few lines of a file.
+    tail file_name: Displays the last 10 lines by default.
+        tail -f file_name: Continuously monitor a file for changes.
+    
+    find – Search for files and directories.
 
-head file_name: Displays the first 10 lines by default.
-tail – Show the last few lines of a file.
+        find /path -name 'file_name': Searches for files with the given name.
+    
+    grep – Search for patterns in files.
 
-tail file_name: Displays the last 10 lines by default.
-tail -f file_name: Continuously monitor a file for changes.
-find – Search for files and directories.
-
-find /path -name 'file_name': Searches for files with the given name.
-grep – Search for patterns in files.
-
-grep 'pattern' file_name: Finds matching patterns in a file.
+    grep 'pattern' file_name: Finds matching patterns in a file.
 
 
 ### 4. Text Editors
 nano – Easy-to-use command-line text editor.
 
-nano file_name: Open file in nano editor.
-Ctrl + X: Exit.
-Ctrl + O: Save.
-vim – Advanced text editor with powerful features.
+    nano file_name: Open file in nano editor.
+    Ctrl + X: Exit.
+    Ctrl + O: Save.
+    vim – Advanced text editor with powerful features.
 
 vim file_name: Open file in vim.
-i: Enter insert mode.
-Esc: Exit insert mode.
-:w: Save.
-:q: Quit.
-:wq: Save and quit.
+    i: Enter insert mode.
+    Esc: Exit insert mode.
+    :w: Save.
+    :q: Quit.
+    :wq: Save and quit.
 
 
 ### 5. Redirection and Pipes
 Redirection:
->: Redirect output to a file (overwrites existing content).
-command > file_name: Redirect output to a file.
->>: Append output to a file.
-command >> file_name: Append to a file.
+    >: Redirect output to a file (overwrites existing content).
+    command > file_name: Redirect output to a file.
+
+    >>: Append output to a file.
+        command >> file_name: Append to a file.
+
 Pipes (|):
-command1 | command2: Pass output from command1 as input to command2.
-Example: ls | grep 'pattern': List files and filter with grep.
+    command1 | command2: Pass output from command1 as input to command2.
+    Example: ls | grep 'pattern': List files and filter with grep.
 
 
 ### 6. System Monitoring and Processes
 ps – Display current processes.
 
-ps aux: Shows all running processes.
-ps -ef: Shows detailed process information.
+    ps aux: Shows all running processes.
+    ps -ef: Shows detailed process information.
+
 top – Real-time system monitoring.
 
-top: Displays running processes and system resource usage.
-htop – Enhanced version of top (may need installation).
+    top: Displays running processes and system resource usage.
+    htop – Enhanced version of top (may need installation).
+    htop: Interactive process viewer.
 
-htop: Interactive process viewer.
 kill – Terminate processes by PID.
+    kill PID: Sends a signal to terminate the process.
 
-kill PID: Sends a signal to terminate the process.
 killall – Kill processes by name.
-
-killall process_name: Kills all instances of the named process.
+    killall process_name: Kills all instances of the named process.
 
 ### 7. Networking and SSH
 ifconfig – Display network configuration.
+    ifconfig: Shows network interfaces.
 
-ifconfig: Shows network interfaces.
 ping – Test network connectivity.
+    ping domain_or_ip: Sends ICMP echo request to a host.
 
-ping domain_or_ip: Sends ICMP echo request to a host.
 netstat – Network statistics and connections.
+    netstat -tuln: Displays active listening ports.
 
-netstat -tuln: Displays active listening ports.
 ssh – Secure Shell (Remote login).
+    ssh user@hostname_or_ip: Log into a remote system securely.
+    Example: ssh root@192.168.1.10.
 
-ssh user@hostname_or_ip: Log into a remote system securely.
-Example: ssh root@192.168.1.10.
 scp – Secure copy over SSH.
+    scp file_name user@hostname:/path/to/destination: Copies a file to a remote server.
 
-scp file_name user@hostname:/path/to/destination: Copies a file to a remote server.
 curl – Transfer data from or to a server.
-
-curl https://example.com: Fetches the content of a URL.
+    curl https://example.com: Fetches the content of a URL.
 
 ## 8. Shell Scripting Basics
 Shell Script – A file containing a series of commands to be executed by the shell.
@@ -166,42 +183,44 @@ Variables:
 
 Control Structures:
 
-If-else:
+    If-else:
 
-    if [ condition ]; then
-    # commands
-    else
-    # commands
-    fi
+        if [ condition ]; then
+        # commands
+        else
+        # commands
+        fi
 
 Loops:
-for loop:   
-    for i in {1..5}; do
-    echo $i
-    done
+    for loop:   
+        for i in {1..5}; do
+        echo $i
+        done
 
-while loop:
-    while [ condition ]; do
-    # commands
-    done
+    while loop:
+        while [ condition ]; do
+        # commands
+        done
 
 
-9. Package Management and Services
+### 9. Package Management and Services
 APT (Debian/Ubuntu):
 
-sudo apt update: Update package lists.
-sudo apt upgrade: Upgrade installed packages.
-sudo apt install package_name: Install a package.
-sudo apt remove package_name: Remove a package.
+    sudo apt update: Update package lists.
+    sudo apt upgrade: Upgrade installed packages.
+    sudo apt install package_name: Install a package.
+    sudo apt remove package_name: Remove a package.
+
 YUM (CentOS/RHEL):
 
-sudo yum update: Update package lists and upgrade installed packages.
-sudo yum install package_name: Install a package.
-sudo yum remove package_name: Remove a package.
+    sudo yum update: Update package lists and upgrade installed packages.
+    sudo yum install package_name: Install a package.
+    sudo yum remove package_name: Remove a package.
+
 Systemd – Managing services.
 
-systemctl start service_name: Start a service.
-systemctl stop service_name: Stop a service.
-systemctl enable service_name: Enable service to start on boot.
-systemctl status service_name: Check service status.
+    systemctl start service_name: Start a service.
+    systemctl stop service_name: Stop a service.
+    systemctl enable service_name: Enable service to start on boot.
+    systemctl status service_name: Check service status.
 

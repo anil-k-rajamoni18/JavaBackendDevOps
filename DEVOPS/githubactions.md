@@ -25,56 +25,63 @@
 
 ### 3. Writing a Basic Workflow
 
-github-actions-demo.yml
+=> github-actions-demo.yml
+
     name: GitHub Actions Demo
     run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
     on: [push]
     jobs:
-    Explore-GitHub-Actions:
-        runs-on: ubuntu-latest
-        steps:
-        - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-        - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-        - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        - name: Check out repository code
+      Explore-GitHub-Actions:
+          runs-on: ubuntu-latest
+          steps:
+          - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+          - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+          - name: Check out repository code
             uses: actions/checkout@v4
-        - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-        - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-        - name: List files in the repository
-            run: |
-            ls ${{ github.workspace }}
-        - run: echo "🍏 This job's status is ${{ job.status }}."
+          
+          - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+          
+          - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+          
+          - name: List files in the repository
+              run: |
+              ls ${{ github.workspace }}
+          - run: echo "🍏 This job's status is ${{ job.status }}."
 
 
 .github/workflows/ci.yml
+
     name: CI Workflow
 
     on:
-    push:
-        branches:
-        - main
-    pull_request:
-        branches:
-        - main
+      push:
+          branches:
+          - main
+          - feature/dev
+      pull_request:
+          branches:
+          - main
 
     jobs:
-    build:
-        runs-on: ubuntu-latest
+      build:
+          runs-on: ubuntu-latest
 
-        steps:
-        # Step 1: Checkout the repository
-        - name: Checkout repository
+          steps:
+          # Step 1: Checkout the repository
+          - name: Checkout repository
             uses: actions/checkout@v2
 
-        # Step 2: Set up JDK (Java Development Kit)
-        - name: Set up JDK 11
+          # Step 2: Set up JDK (Java Development Kit)
+          - name: Set up JDK 11
             uses: actions/setup-java@v2
             with:
             java-version: '11'  # You can modify this to your preferred version of Java
             distribution: 'adoptopenjdk'  # You can change the distribution to OpenJDK, Zulu, etc.
 
-        # Step 3: Cache Gradle dependencies to speed up builds
-        - name: Cache Gradle dependencies
+          # Step 3: Cache Gradle dependencies to speed up builds
+          - name: Cache Gradle dependencies
             uses: actions/cache@v2
             with:
             path: ~/.gradle/caches
@@ -82,17 +89,16 @@ github-actions-demo.yml
             restore-keys: |
                 ${{ runner.os }}-gradle-
 
-        # Step 4: Build the project with Gradle
-        - name: Build with Gradle
+          # Step 4: Build the project with Gradle
+          - name: Build with Gradle
             run: ./gradlew build --no-daemon  # The --no-daemon option prevents Gradle from running in the background
 
-        # Step 5: Run tests with Gradle
-        - name: Run tests with Gradle
+          # Step 5: Run tests with Gradle
+          - name: Run tests with Gradle
             run: ./gradlew test --no-daemon  # This will run the tests using Gradle
 
 
 Explanation of the Example:
-
     on: Specifies the events that trigger the workflow (push and pull_request on the main branch).
     jobs: Defines the jobs that will run. In this case, there's only one job called build.
     runs-on: Specifies the operating system for the runner (here, it’s ubuntu-latest).
