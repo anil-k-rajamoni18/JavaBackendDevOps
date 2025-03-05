@@ -39,61 +39,79 @@ Linux file permissions determine who can read, write, or execute a file.
     w: Write permission (modify the file).
     x: Execute permission (run the file as a program).
 
-- Three levels of permissions 
-    - Owner (u) 
-    - Group (g)
-    - Other (o)
+    - Three levels of permissions 
+        - Owner (u) 
+        - Group (g)
+        - Other (o)
 
-  Example: rwxr-x---
-    Owner: rwx
-    Group: r-x
-    Other: ---
-
-    -rw-r--r--
-
+    Example: rwxr-x---
+        Owner: rwx
+        Group: r-x
+        Other: ---
 
 chmod – Change file permissions.
+    chmod [OPTION] MODE FILE...
+    - Permissions are represented as a three-digit number or symbolic characters (like r, w, x).
+    - Numeric (Octal) Notation: Uses three digits representing the permissions for the owner, group, and others.
+        r = 4, w = 2, x = 1
+        Owner, group, and others have different values.
+    - Symbolic Notation: Uses letters (r, w, x) and operators (+, -, =) to set permissions.
 
-    chmod +x file_name: Adds execute permission.
-    chmod 755 file_name: Sets permissions to rwxr-xr-x.
+    Common Examples:
+        chmod 744 file.txt : Grant rwx permissions to the owner (and only read to others):
+        chmod 755 file.txt : Grant rwx permissions to the owner, and only read to group and others
+        chmod u+x file.txt : Give execute permission to the owner
+        chmod g-w file.txt : Remove write permission for the group
+        chmod a+rwx file.txt : Set read, write, and execute permissions for everyone
+        chmod -R 755 /home/user/docs : Change file permissions recursively
+
+
+
 
 chown – Change file owner.
-
-    chown user:group file_name: Changes ownership.
+    - The chown command in Linux is used to change the owner and/or group of a file or directory. 
+    - chown [OPTION] USER[:GROUP] FILE...
     
-ls -l – Lists files and their permissions.
-    Example: -rwxr-xr-x 1 user group 4096 Mar 1 12:34 file_name
+    Common Examples:
+        chown john file.txt         : Change the owner of a file
+        chown john:admin file.txt   : Change the owner and the group of a file
+        chown -R john:admin /home/user/docs : Change the owner of a directory and all its contents (recursive)
+        chown :admin file.txt       : Change group only
 
-Understanding Permission Codes:
-
-    rwx is a combination of numbers:
-    r = 4, w = 2, x = 1.
-    Permissions are expressed as a 3-digit number: e.g., 755 means rwx for owner, r-x for group, and r-x for others.
 
 
 ### 3. File Manipulation
-    cat – Display file content.
+    cat : Display file content.
 
         cat file_name: Shows file content.
     
-    less – View large files interactively.
+    less : View large files interactively.
         less file_name: Allows scrolling and searching in a file.
     
-    head – Show the first few lines of a file.
+    head : Show the first few lines of a file.
         head file_name: Displays the first 10 lines by default.
     
-    tail – Show the last few lines of a file.
+    tail : Show the last few lines of a file.
 
-    tail file_name: Displays the last 10 lines by default.
+        tail file_name: Displays the last 10 lines by default.
         tail -f file_name: Continuously monitor a file for changes.
     
-    find – Search for files and directories.
+    find : Search for files and directories 
+        find [path] [options] [expression]
+        1. Find all files with a specific name:         find /home/user -name "file.txt"
+        2. Find files by type (e.g., directories):      find /home/user -type d
+        3. Find files with specific size::              find /home/user -size +100M
+        4. Find and delete files:                       find /home/user -name "*.log" -delete
 
-        find /path -name 'file_name': Searches for files with the given name.
-    
-    grep – Search for patterns in files.
+    grep : Search for patterns in files. 
+        - It can be used to search for specific text in one or more files and print the matching lines.
+        - grep [options] 'pattern' [file]
+        1. Search for a pattern in a file:                          grep "hello" myfile.txt
+        2. Search for a pattern in multiple files:                  grep "error" *.log
+        3. Search recursively for a pattern in a directory:         grep -r "warning" /var/log/
+        4. Ignore case while searching:                             grep -i "example" myfile.txt
+        5. Count the number of matches:                             grep -c "error" *.log
 
-    grep 'pattern' file_name: Finds matching patterns in a file.
 
 
 ### 4. Text Editors
@@ -115,14 +133,31 @@ vim file_name: Open file in vim.
 ### 5. Redirection and Pipes
 Redirection:
     >: Redirect output to a file (overwrites existing content).
-    command > file_name: Redirect output to a file.
-
+        command > file_name: Redirect output to a file.
+        echo "Hello, world!" > output.txt
+    
     >>: Append output to a file.
         command >> file_name: Append to a file.
+        echo "This is another line." >> output.txt
+
+    Input Redirection (<): The < operator is used to take input for a command from a file, rather than from the terminal.
+        sort < input.txt
+
+    Error Redirection (2>): The 2> operator is used to redirect error output (stderr) to a file.
+        ls non_existent_directory 2> error.txt
+
+    Redirecting both stdout and stderr (&>): You can redirect both the standard output and error output to a file using &>.
+        ls non_existent_directory &> output.txt
+
 
 Pipes (|):
     command1 | command2: Pass output from command1 as input to command2.
-    Example: ls | grep 'pattern': List files and filter with grep.
+     Example: 
+        ls | grep 'pattern': List files and filter with grep.
+        cat file.txt | grep "pattern"
+        cat file.txt | grep "pattern" | wc -l
+        ls -l | sort
+        cat file.txt | grep "pattern" > output.txt
 
 
 ### 6. System Monitoring and Processes
