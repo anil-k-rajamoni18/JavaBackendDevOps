@@ -265,3 +265,98 @@ Key Terms:
     Plugin: An add-on to extend Jenkins' features.
     Build Queue: List of jobs waiting to run.
     Build Executor: Slot on a node that runs a build.
+
+
+### Freestyle 
+- Freestyle projects are the simplest and most flexible type of Jenkins job.
+- They are configured entirely through the Jenkins web interface.
+- Suitable for small to medium-sized projects or simple automation tasks.
+
+=> Use Cases for Freestyle Projects
+    Building and testing code.
+    Running scripts or commands.
+    Deploying applications.
+    Automating repetitive tasks.
+
+=> Features of Freestyle Projects
+    1. Flexibility
+    2. GUI-Based Configuration
+    3. Integration with Tools
+    4. Extensibility
+    5. Manual or Automated Triggers
+
+=> Cons of Freestyle Projects
+    1. Limited Scalability
+    2. Less Reproducible
+    3. Manual Configuration
+    4. Less Flexible Than Pipelines
+    5. Maintenance Overhead
+
+
+=>  Comparison with Jenkins Pipelines
+Freestyle Projects:
+    GUI-based configuration.
+    Suitable for simple tasks.
+    Limited scalability.
+
+Pipelines:
+    Code-based configuration (Jenkinsfile).
+    Suitable for complex workflows.
+    Version-controlled and reproducible.
+
+## Proj-1: Create the Freestyle Job
+
+1. Log in to Jenkins:
+
+    Open your Jenkins dashboard in a web browser.
+
+2. Create a New Freestyle Job:
+
+    Click on New Item on the Jenkins dashboard.
+    Enter a name for your job (e.g., HelloWorld-Date-Freestyle).
+    Select Freestyle project and click OK.
+
+3. Configure the Job:
+    You will be taken to the job configuration page.
+
+4. Add a Build Step:
+
+    Scroll down to the Build section.
+    Click Add build step and select Execute shell (for Linux/macOS) or Execute Windows batch command (for Windows).
+
+5. Write the Commands:
+    For Linux/macOS:
+        echo "Hello, World!"
+        echo "Current Date: $(date)"
+
+    For Windows:
+        echo Hello, World!
+        echo Current Date: %date% %time%
+
+6. Save the Job:
+    Scroll down and click Save.
+
+7. Run the Job:
+    On the job page, click Build Now to run the job.
+    Jenkins will execute the commands and display the output in the console.
+
+8. Check the Output:
+    After the build completes, click on the build number (e.g., #1) in the Build History section.
+
+## Proj-2: Add a Parameter for Customization
+
+1. Go to the job configuration page.
+2. In the General section, check This project is parameterized.
+3. Add a String Parameter:
+
+    Name: GREETING
+    Default Value: Hello, World!
+
+3. Modify the Execute shell or Execute Windows batch command step to use the parameter:
+    For Linux/macOS:
+        echo "$GREETING"
+        echo "Current Date: $(date)"
+
+    For Windows:
+        echo %GREETING%
+        echo Current Date: %date% %time%
