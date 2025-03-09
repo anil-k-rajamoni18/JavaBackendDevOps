@@ -14,7 +14,8 @@
 
     mkdir – Create a directory.
 
-    mkdir directory_name: Creates a new directory.
+        mkdir directory_name: Creates a new directory.
+
     rm – Remove files or directories.
 
         rm file_name: Deletes a file.
@@ -112,15 +113,14 @@ chown – Change file owner.
         4. Ignore case while searching:                             grep -i "example" myfile.txt
         5. Count the number of matches:                             grep -c "error" *.log
 
-
-
 ### 4. Text Editors
 nano – Easy-to-use command-line text editor.
 
     nano file_name: Open file in nano editor.
     Ctrl + X: Exit.
     Ctrl + O: Save.
-    vim – Advanced text editor with powerful features.
+    
+vim – Advanced text editor with powerful features.
 
 vim file_name: Open file in vim.
     i: Enter insert mode.
@@ -214,27 +214,28 @@ Variables:
 
     Declare variables: variable_name=value.
     Access variables: $variable_name.
-    Example: name="John"; echo $name.
+    Example: name="John"; 
+            echo $name.
 
 Control Structures:
 
     If-else:
 
         if [ condition ]; then
-        # commands
+            # commands
         else
-        # commands
+            # commands
         fi
 
 Loops:
     for loop:   
         for i in {1..5}; do
-        echo $i
+            echo $i
         done
 
     while loop:
         while [ condition ]; do
-        # commands
+            # commands
         done
 
 

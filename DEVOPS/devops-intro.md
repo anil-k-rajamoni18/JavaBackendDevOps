@@ -60,7 +60,7 @@ The DevOps Lifecycle is the series of steps that teams follow to develop, test, 
 
     8.Monitor:
         After deployment, it’s important to monitor how the software is working.
-        Tools: Prometheus, Nagios
+        Tools: Prometheus, Nagios, Splunk, Elastic APM 
 
 
 ### 4. Core Principles of DevOps

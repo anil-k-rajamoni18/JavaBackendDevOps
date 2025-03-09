@@ -34,25 +34,26 @@ How to Install Jenkins (local machine)?
 
 #### How to Install Jenkins on an EC2 Ubuntu Machine (Step-by-Step)
 1. Launch EC2 Instance:
-
     Launch an Ubuntu instance on AWS EC2 and connect to it via SSH.
 
-2.Update System Packages:
+2. Update System Packages:
     SSH into your EC2 instance.
     Update the package list:
         sudo apt update
+
 3. Install Java (Jenkins Requirement):
     Jenkins requires Java, so install it:
-            sudo apt install openjdk-11-jdk -y
+            sudo apt install openjdk-17-jdk -y
     Verify the Java installation:
             java -version
 
 4. Add Jenkins Repository and Key:
-    Add the Jenkins repository to the system:
-        wget -q -O - https://pkg.jenkins.io/jenkins.io.key | sudo apt-key add -
-
-    Add the Jenkins package repository to your sources list:
-        sudo sh -c 'echo deb http://pkg.jenkins.io/debian/ stable main > /etc/apt/sources.list.d/jenkins.list'
+    Add the Jenkins repository to the system & Add the Jenkins package repository to your sources list:
+        sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+        https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
 
 5. Install Jenkins:
     Update package lists and install Jenkins:
@@ -81,6 +82,24 @@ How to Install Jenkins (local machine)?
 10. Create an Admin User:
     Create an admin username and password for Jenkins to complete the setup.
 
+### Docker Slave Configuration
+1. Run the below command to Install Docker
+    sudo apt update
+    sudo apt install docker.io
+
+2. Grant Jenkins user and Ubuntu user permission to docker deamon.
+    sudo su - 
+    usermod -aG docker jenkins
+    usermod -aG docker ubuntu
+    systemctl restart docker
+
+3. Once you are done with the above steps, it is better to restart Jenkins.
+    http://<ec2-instance-public-ip>:8080/restart
+
+4. Install the docker pipeline plugin in Plugin section. 
+    Manage Jenkins > Plugins > Available Plugins > Search docker pieline 
+    Restart the jenkins 
+    The docker agent configuration is now successful.
 
 
 ### Continuous Integration (CI):
