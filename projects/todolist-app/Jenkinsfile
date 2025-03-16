@@ -29,45 +29,50 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'echo "Building the Flask to-do list application..."'
-                sh 'cd projects/todolist-app'
-                sh 'pip install -r requirements.txt'
+                dir ('projects/todolist-app') {
+                    sh 'echo "Building the Flask to-do list application..."'
+                    sh 'pip install -r requirements.txt'
+                }
+
             }
         }
 
         stage('Test') {
             steps {
-                sh 'echo "Running tests..."'
-                sh 'cd projects/todolist-app'
-                sh 'python -m pytest tests/'
+                dir ('projects/todolist-app') {
+                    sh 'echo "Running tests..."'
+                    sh 'python -m pytest tests/'
+                }
             }
         }
 
         stage('PyLint') {
             steps {
-                sh 'echo "Running PyLint..."'
-                sh 'cd projects/todolist-app'
-                sh 'pylint app.py' 
+                dir ('projects/todolist-app') {
+                    sh 'echo "Running PyLint..."'
+                    sh 'pylint app.py'
+                }
             }
         }
 
         stage('Docker Build and Push') {
             steps {
                 script {
-                    sh 'echo "Building Docker image..."'
-                    sh 'cd projects/todolist-app'
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ."
+                    dir ('projects/todolist-app') { 
+                        sh 'echo "Building Docker image..."'
+                        sh "docker build -t ${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ."
 
-                    sh 'echo "Logging into Docker Hub..."'
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        sh 'echo "Logging into Docker Hub..."'
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        }
+
+                        sh 'echo "Tagging Docker image"'
+                        sh "docker tag ${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ${DOCKER_REPO}:${params.DOCKER_IMAGE_TAG}"
+
+                        sh 'echo "Pushing Docker image to Docker Hub..."'
+                        sh "docker push ${DOCKER_REPO}:${params.DOCKER_IMAGE_TAG}"
                     }
-
-                    sh 'echo "Tagging Docker image"'
-                    sh "docker tag ${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ${DOCKER_REPO}:${params.DOCKER_IMAGE_TAG}"
-
-                    sh 'echo "Pushing Docker image to Docker Hub..."'
-                    sh "docker push ${DOCKER_REPO}:${params.DOCKER_IMAGE_TAG}"
                 }
             }
         }
