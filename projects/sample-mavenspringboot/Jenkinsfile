@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build') {
+            steps {
+                echo 'Building the Maven project...'
+                dir('projects/sample-mavenspringboot') {
+                    sh './mvnw clean install'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running unit tests...'
+                dir('projects/sample-mavenspringboot') {
+                    sh './mvnw test'
+                }
+            }
+            post {
+                always {
+                    junit 'projects/sample-mavenspringboot/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                dir('projects/sample-mavenspringboot') {
+                    sh './mvnw package'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sshagent(credentials: ['ec2slavenode-sshprivatekey']) {
+                        // Copy the JAR file to the remote server
+                        sh 'scp -o StrictHostKeyChecking=no target/*.jar ubuntu@ec2-13-232-241-46.ap-south-1.compute.amazonaws.com:/home/ubuntu/'
+
+                        // Run the application on the remote server
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-232-241-46.ap-south-1.compute.amazonaws.com "java -jar /home/ubuntu/hello-maven.jar"'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs() // Delete the workspace
+        }
+    }
+}
