@@ -19,7 +19,7 @@ class StringUtilsTest {
 
     @Test
     void testCountVowels() {
-        assertEquals(3, StringUtils.countVowels("hello"));
+        assertEquals(2, StringUtils.countVowels("hello"));
         assertEquals(5, StringUtils.countVowels("aeiou"));
     }
 
