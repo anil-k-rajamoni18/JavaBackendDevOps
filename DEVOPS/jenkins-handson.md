@@ -457,6 +457,48 @@ Step 8: Save and Run the Project
     Manually trigger a build by clicking Build Now.
     Monitor the build progress in the Console Output.
 
+
+### Proj-5 : Sample Java Project with Webhooks
+
+1. Create a New Freestyle Project:
+    Go to Jenkins Dashboard → New Item → Enter a name (e.g., MyJavaApp-Webhooks) → Select Freestyle project → Click OK.
+
+2. Configure Source Code Management (SCM):
+    Under the Source Code Management section, select Git.
+    Enter the Repository URL (e.g., https://github.com/your-username/my-java-app.git).
+    Specify the branch (e.g., main or master).
+
+3. Enable Webhooks:
+    Under the Build Triggers section, check GitHub hook trigger for GITScm polling (or the equivalent for GitLab/Bitbucket).
+    This ensures Jenkins will trigger a build whenever a push event is detected in the repository.
+
+    GitHub:
+        Go to your repository → Settings → Webhooks → Add webhook.
+        Set the Payload URL to http://<your-jenkins-server>/github-webhook/.
+        Set the Content type to application/json.
+        Select the events (e.g., Just the push event).
+        Click Add webhook.
+
+    GitLab:
+        Go to your repository → Settings → Webhooks.
+        Set the URL to http://<your-jenkins-server>/project/<your-project-name>.
+        Set the Trigger to Push events.
+        Click Add webhook.
+
+    Bitbucket:
+        Go to your repository → Repository settings → Webhooks → Add webhook.
+        Set the URL to http://<your-jenkins-server>/bitbucket-hook/.
+        Set the Triggers to Repository push.
+        Click Save.
+
+
+3. Add Build Step:
+    Under the Build section, click Add build step and select Invoke top-level Maven targets.
+    Enter the Maven goal (e.g., clean compile).
+    Save the Project:
+    Click Save to apply the configuration.
+
+
 ## Configuring Docker agents as slave nodes to a Jenkins master
 Prerequisites
 
@@ -523,3 +565,508 @@ Steps to Add a Slave Node with SSH Authentication
 
 4. Save the Configuration:
 5. Click Save.
+
+
+
+## What is a Pipeline?
+    
+    - A Pipeline in Jenkins is a suite of plugins that supports implementing and integrating continuous delivery pipelines into Jenkins.
+    - It allows you to define the entire build, test, and deployment process as code (often referred to as "Pipeline as Code").
+    - Pipelines are defined using a Jenkinsfile, which is a text file stored in the source code repository.
+
+
+=> Difference between Scripted and Declarative Pipelines
+
+Declarative Pipeline:
+    - A more recent and simplified way to define pipelines.
+    - Uses a structured, pre-defined syntax.
+    - Easier to read and write, especially for beginners.
+    Example:
+        pipeline {
+            agent any
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Building...'
+                    }
+                }
+            }
+        }
+
+Scripted Pipeline:
+    - A more flexible and powerful way to define pipelines.
+    - Uses Groovy-based syntax.
+    - Better for complex workflows and custom logic.
+    Example:
+        node {
+            stage('Build') {
+                echo 'Building...'
+            }
+        }
+
+
+### Declarative Pipeline
+- Declarative Pipeline is a simplified and structured way to define CI/CD pipelines in Jenkins.
+- It uses a predefined syntax, making it easier to read, write, and maintain.
+
+=> Key Concepts of Declarative Pipeline
+1. Pipeline Block:
+    The pipeline block is the outermost block that defines the entire pipeline.
+    Example:
+        pipeline {
+            // Pipeline configuration goes here
+        }
+
+2. Agent:
+    The agent directive specifies where the pipeline will run (e.g., on any available agent, a specific node, or in a Docker container).
+    Declarative Pipeline:
+        Use agent { label 'node-label' } to specify a Jenkins slave by label.
+        Use agent { docker { image 'docker-image' } } to specify a Docker container.
+        use agent any # job will run on any available slave
+    Scripted Pipeline:
+        Use node('node-label') to specify a Jenkins slave by label.
+        Use docker.image('docker-image').inside to run steps inside a Docker container.
+
+    Example:
+        agent any
+
+3. Stages:
+    The stages block contains one or more stage blocks, each representing a logical step in the pipeline (e.g., Build, Test, Deploy).
+    Example:
+
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building...'
+                }
+            }
+        }
+
+4. Steps:
+    The steps block contains the actual commands or actions to be executed within a stage.
+    Example:
+        steps {
+            echo 'Running tests...'
+        }
+
+5. Environment Variables:
+    The environment directive is used to define environment variables that can be used throughout the pipeline.
+    Example:
+        environment {
+            DEPLOY_ENV = 'production'
+        }
+
+6. Post Actions:
+    The post block defines actions to be performed after the pipeline completes (e.g., success, failure, always).
+    Example:
+        post {
+            success {
+                echo 'Pipeline succeeded!'
+            }
+            failure {
+                echo 'Pipeline failed!'
+            }
+        }
+
+7. Parameters:
+    The parameters directive allows you to define user-input parameters for the pipeline.
+    Example:
+        parameters {
+            string(name: 'VERSION', defaultValue: '1.0', description: 'Version to deploy')
+        }
+
+8. Tools:
+    The tools directive is used to specify tools (e.g., JDK, Maven) to be installed and used in the pipeline.
+    Example:
+
+        tools {
+            maven 'Maven-3.8.6'
+        }
+
+
+9.  when Conditional
+    - The when directive allows you to execute a stage or step conditionally based on a specified condition. 
+    - It is useful for skipping stages or steps based on the pipeline's state or parameters.
+    Conditions:
+        branch: Execute if the branch matches a pattern.
+        environment: Execute if an environment variable matches a value.\
+        expression: Execute if a Groovy expression evaluates to true.
+        allOf: Execute if all nested conditions are true.
+        anyOf: Execute if any nested condition is true.
+        not: Execute if the nested condition is false.
+
+10.  input Step
+    The input step pauses the pipeline and waits for user input. It is useful for manual approvals or parameterized deployments.
+    Key Features of input
+    Parameters:
+        message: A message to display to the user.
+        id: A unique identifier for the input step.
+        ok: Custom text for the "Proceed" button.
+        submitter: Restrict who can approve the input.
+        parameters: Define input fields for user-provided values.
+
+    Example:
+        pipeline {
+            agent any
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Building the application...'
+                    }
+                }
+                stage('Approval') {
+                    steps {
+                        input message: 'Deploy to production?', ok: 'Deploy'
+                    }
+                }
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying to production...'
+                    }
+                }
+            }
+        }
+
+
+#### Example 1: Basic Pipeline
+- This pipeline has three stages: Build, Test, and Deploy.
+
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the application...'
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Running tests...'
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    echo 'Deploying the application...'
+                }
+            }
+        }
+        post {
+            success {
+                echo 'Pipeline succeeded!'
+            }
+            failure {
+                echo 'Pipeline failed!'
+            }
+        }
+    }
+
+
+#### Example 2: Pipeline with Environment Variables
+- This pipeline uses environment variables to customize the build process.
+
+    pipeline {
+        agent any
+        environment {
+            DEPLOY_ENV = 'production'
+            VERSION = '1.0.0'
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building version ${VERSION} for ${DEPLOY_ENV}..."
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Running tests...'
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    echo "Deploying to ${DEPLOY_ENV}..."
+                }
+            }
+        }
+    }
+
+
+### Example 3: Pipeline with Parameters
+ This pipeline accepts a user-defined parameter for the version to deploy.
+
+    pipeline {
+        agent any
+        parameters {
+            string(name: 'VERSION', defaultValue: '1.0.0', description: 'Version to deploy')
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building version ${params.VERSION}..."
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    echo "Deploying version ${params.VERSION}..."
+                }
+            }
+        }
+    }
+
+
+### Example 4: Pipeline with Tools
+    This pipeline uses Maven to build a Java project.
+
+    pipeline {
+        agent {
+            docker {
+                image 'maven:3.8.6-jdk-11'
+                args '-v /tmp:/tmp'
+            }
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+    }
+
+### Example 5: Pipeline with Docker
+    This pipeline runs the build inside a Docker container.
+
+    pipeline {
+        agent {
+            docker {
+                image 'maven:3.8.6-jdk-11'
+                args '-v /tmp:/tmp'
+            }
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+    }
+
+
+### Example-6: when conditional & input 
+
+    pipeline {
+        agent any
+        environment {
+            DEPLOY_ENV = 'production'
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the application...'
+                }
+            }
+            stage('Deploy') {
+                when {
+                    allOf {
+                        branch 'main'
+                        environment name: 'DEPLOY_ENV', value: 'production'
+                    }
+                }
+                steps {
+                    echo 'Deploying to production...'
+                }
+            }
+        }
+    }
+
+
+
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the application...'
+                }
+            }
+            stage('Approval') {
+                steps {
+                    script {
+                        def userInput = input(
+                            id: 'userInput',
+                            message: 'Provide deployment details',
+                            parameters: [
+                                string(name: 'VERSION', defaultValue: '1.0.0', description: 'Version to deploy')
+                            ]
+                        )
+                        env.VERSION = userInput.VERSION
+                    }
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    echo "Deploying version ${env.VERSION}..."
+                }
+            }
+        }
+    }
+
+
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the application...'
+                }
+            }
+            stage('Approval') {
+                when {
+                    branch 'main'
+                }
+                steps {
+                    input message: 'Deploy to production?', ok: 'Deploy'
+                }
+            }
+            stage('Deploy') {
+                when {
+                    branch 'main'
+                }
+                steps {
+                    echo 'Deploying to production...'
+                }
+            }
+        }
+    }
+
+
+### Example-7: Java Spring Boot with Gradle
+
+    pipeline {
+        agent any
+        environment {
+            // Define environment variables
+            DEPLOY_ENV = 'staging'
+            VERSION = '1.0.0'
+        }
+        tools {
+            // Specify Gradle version (configured in Jenkins)
+            gradle 'Gradle-7.4'
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the Java Spring Boot application...'
+                    sh './gradlew clean build'
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Running unit tests...'
+                    sh './gradlew test'
+                }
+            }
+            stage('Code Quality Check') {
+                steps {
+                    echo 'Running code quality checks...'
+                    sh './gradlew check'
+                }
+            }
+            stage('Approval') {
+                when {
+                    // Only prompt for approval if deploying to production
+                    environment name: 'DEPLOY_ENV', value: 'production'
+                }
+                steps {
+                    input message: 'Deploy to production?', ok: 'Deploy'
+                }
+            }
+            stage('Deploy') {
+                when {
+                    // Only deploy if the branch is main or release
+                    anyOf {
+                        branch 'main'
+                        branch 'release/*'
+                    }
+                }
+                steps {
+                    echo "Deploying version ${VERSION} to ${DEPLOY_ENV}..."
+                    sh './gradlew bootJar'
+                    // Add deployment commands here (e.g., copying the JAR to a server)
+                }
+            }
+        }
+        post {
+            success {
+                echo 'Pipeline succeeded!'
+            }
+            failure {
+                echo 'Pipeline failed!'
+            }
+        }
+    }
+
+
+#### Example-8: Jenkinsfile for Python
+    pipeline {
+        agent any
+        environment {
+            // Define environment variables
+            DEPLOY_ENV = 'staging'
+            VERSION = '1.0.0'
+        }
+        stages {
+            stage('Setup Virtual Environment') {
+                steps {
+                    echo 'Setting up Python virtual environment...'
+                    sh 'python3 -m venv venv'
+                    sh 'source venv/bin/activate'
+                }
+            }
+            stage('Install Dependencies') {
+                steps {
+                    echo 'Installing dependencies...'
+                    sh 'pip install -r requirements.txt'
+                }
+            }
+            stage('Lint') {
+                steps {
+                    echo 'Running linting...'
+                    sh 'pylint *.py'
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Running unit tests...'
+                    sh 'pytest'
+                }
+            }
+            stage('Approval') {
+                when {
+                    // Only prompt for approval if deploying to production
+                    environment name: 'DEPLOY_ENV', value: 'production'
+                }
+                steps {
+                    input message: 'Deploy to production?', ok: 'Deploy'
+                }
+            }
+            stage('Deploy') {
+                when {
+                    // Only deploy if the branch is main
+                    branch 'main'
+                }
+                steps {
+                    echo "Deploying version ${VERSION} to ${DEPLOY_ENV}..."
+                    // Add deployment commands here (e.g., copying files to a server)
+                }
+            }
+        }
+        post {
+            success {
+                echo 'Pipeline succeeded!'
+            }
+            failure {
+                echo 'Pipeline failed!'
+            }
+        }
+    }
