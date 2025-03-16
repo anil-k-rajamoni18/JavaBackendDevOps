@@ -17,7 +17,7 @@ pipeline {
         stage('Navigate to projects directory') {
             steps {
                 echo 'Navigating to projects directory...'
-                dir('projects/sample-maven-project') {
+                dir('projects/sample-maven') {
                     echo 'Current directory: ' + pwd()
                 }
             }
@@ -26,7 +26,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the Maven project...'
-                dir('projects/sample-maven-project') {
+                dir('projects/sample-maven') {
                     sh 'mvn clean compile'
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
-                dir('projects/sample-maven-project') {
+                dir('projects/sample-maven') {
                     sh 'mvn test'
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Packaging the application...'
-                dir('projects/sample-maven-project') {
+                dir('projects/sample-maven') {
                     sh 'mvn package'
                 }
             }
