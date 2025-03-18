@@ -1070,3 +1070,571 @@ Scripted Pipeline:
             }
         }
     }
+
+
+## Agents, Stages, Steps, and Post Actions,  Parallel Execution, Shared Libraries
+1. Agents: Define where the pipeline runs (e.g., a specific node, Docker container, or any available agent).
+Example:
+    pipeline {
+        agent any // Runs on any available agent
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building the application...'
+                }
+            }
+        }
+    }    
+
+2. Stages: Logical divisions in the pipeline (e.g., Build, Test, Deploy).
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    echo 'Building...'
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Testing...'
+                }
+            }
+        }
+    }
+
+3. Steps: Individual tasks within a stage (e.g., running a shell command, compiling code).
+
+    steps {
+        sh 'mvn clean install' // Runs a Maven build
+    }
+
+4. Post Actions: Define actions to run after a stage or pipeline completes (e.g., success, failure).
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+
+5. Using Environment Variables
+    pipeline {
+        agent any
+        environment {
+            APP_VERSION = '1.0.0'
+            BUILD_NUMBER = currentBuild.number
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building version ${APP_VERSION}, build number ${BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+
+
+6. Parallel Execution
+
+- Execute multiple stages simultaneously to save time.
+    pipeline {
+        agent any
+        stages {
+            stage('Build and Test') {
+                parallel {
+                    stage('Build') {
+                        steps {
+                            echo 'Building the application...'
+                        }
+                    }
+                    stage('Test') {
+                        steps {
+                            echo 'Running tests...'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+7. Shared Libraries
+
+- Creating Reusable Pipeline Code
+- Shared libraries allow you to reuse code across multiple pipelines.
+- Create a shared library repository with a structure like:
+    vars/
+        buildApp.groovy
+        deployApp.groovy
+
+- Example of a shared library method (buildApp.groovy):
+    
+    def call(String version) {
+        echo "Building application version ${version}"
+        sh "mvn clean install -Dversion=${version}"
+    }
+
+- Use the shared library in a pipeline:
+
+    @Library('my-shared-library') _
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    buildApp('1.0.0')
+                }
+            }
+        }
+    }
+
+
+## Jenkins Integration with Maven, Gradle, Docker, and Kubernetes
+
+1. Maven:
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+    }
+}
+
+2. Gradle:
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'gradle build'
+            }
+        }
+    }
+}
+
+3. Docker:
+
+pipeline {
+    agent any
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-app:1.0.0 .'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push my-app:1.0.0'
+            }
+        }
+    }
+}
+
+4. Kubernetes:
+
+- Use the Kubernetes plugin to deploy applications.
+
+    pipeline {
+        agent any
+        stages {
+            stage('Deploy to Kubernetes') {
+                steps {
+                    sh 'kubectl apply -f k8s-deployment.yaml'
+                }
+            }
+        }
+    }
+
+
+## Jenkins Plugins and Integrations
+
+1. Installing and Managing Plugins
+
+- Jenkins plugins extend the functionality of Jenkins, enabling integration with various tools and technologies. 
+- The Plugin Manager is used to install, update, and manage plugins.
+
+Steps:
+
+a). Access Plugin Manager:
+    Go to Manage Jenkins > Manage Plugins.
+    The Plugin Manager has four tabs: Updates, Available, Installed, and Advanced.
+
+b). Install Essential Plugins:
+    Search for and install the following plugins:
+        Git Plugin: Integrates Jenkins with Git repositories.
+        Pipeline Plugin: Enables defining pipelines as code.
+        Blue Ocean Plugin: Provides a modern UI for Jenkins pipelines.
+        Docker Plugin: Integrates Jenkins with Docker for containerized builds.
+
+    Example: Install the Git Plugin:
+        Go to Available tab, search for "Git Plugin", check the box, and click Install without restart.
+
+c). Manage Plugins:
+    Update plugins from the Updates tab.
+    Uninstall plugins from the Installed tab.
+
+2. Blue Ocean Plugin
+
+- Blue Ocean is a modern UI for Jenkins that provides a better visualization of pipelines and their status.
+
+Steps:
+
+a) Install Blue Ocean Plugin:
+    Use the Plugin Manager to install the Blue Ocean plugin.
+
+b) Access Blue Ocean:
+    Click on Open Blue Ocean from the Jenkins dashboard.
+    Alternatively, append /blue to your Jenkins URL (e.g., http://localhost:8080/blue).
+
+c). Create and Visualize Pipelines:
+    Use the Blue Ocean interface to create a new pipeline or visualize existing ones.
+    Example: Create a pipeline from a GitHub repository:
+        Click New Pipeline, select GitHub, and follow the steps to connect your repository.
+    View pipeline runs with a graphical representation of stages and steps.
+
+3. Integrating Jenkins with Version Control
+- Jenkins can integrate with version control systems like GitHub or GitLab to trigger builds automatically.
+
+Steps:
+
+a) Set Up GitHub/GitLab Integration:
+    Install the GitHub Plugin or GitLab Plugin via the Plugin Manager.
+    Configure Jenkins to connect to your GitHub/GitLab repository:
+        Go to Manage Jenkins > Configure System.
+        Add GitHub/GitLab credentials (e.g., personal access token).
+
+b) Use Webhooks for Automatic Builds:
+    Set up a webhook in your GitHub/GitLab repository:
+    Go to your repository settings > Webhooks.
+    Add a webhook URL (e.g., http://<jenkins-server>/github-webhook/).
+    Configure Jenkins job to trigger on webhook events:
+        In your Jenkins job configuration, enable GitHub hook trigger for GITScm polling.
+
+c) Example:
+    Create a Jenkins pipeline job that pulls code from a GitHub repository:
+        In the job configuration, under Source Code Management, select Git and provide the repository URL.
+        Under Build Triggers, select GitHub hook trigger for GITScm polling.
+
+
+4. Integrating Jenkins with Artifact Repositories
+
+- Jenkins can push or pull artifacts from repositories like Nexus, Artifactory, or Docker Hub.
+
+Steps:
+a) Install Required Plugins:
+    Install plugins like Nexus Artifact Uploader, Artifactory Plugin, or Docker Pipeline Plugin.
+
+b) Push Artifacts to Nexus/Artifactory:
+    Configure Jenkins to push build artifacts to Nexus/Artifactory:
+    Use the Nexus Artifact Uploader plugin to upload artifacts.
+    Example: Add a post-build step in your Jenkins job to upload a .jar file to Nexus:
+
+        nexusArtifactUploader(
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            nexusUrl: 'nexus.example.com',
+            groupId: 'com.example',
+            version: '1.0',
+            repository: 'snapshots',
+            credentialsId: 'nexus-credentials',
+            artifacts: [
+                [artifactId: 'my-app',
+                type: 'jar',
+                file: 'target/my-app.jar']
+            ]
+        )
+
+c) Use the Docker Pipeline Plugin to pull Docker images:
+
+- Example: Add a pipeline step to pull an image from Docker Hub:
+    pipeline {
+        agent any
+        stages {
+            stage('Pull Docker Image') {
+                steps {
+                    script {
+                        docker.image('nginx:latest').pull()
+                    }
+                }
+            }
+        }
+    }
+
+
+## Different Types of Credentials in Jenkins and Using Them in Pipelines
+
+- Jenkins provides a Credentials Plugin to securely store and manage sensitive information such as usernames, passwords, SSH keys, and API tokens. 
+- These credentials can be used in pipelines without hardcoding sensitive data, improving security and maintainability.
+
+1. Types of Credentials in Jenkins
+Jenkins supports the following types of credentials:
+    Username and Password
+    Secret Text (e.g., API tokens, encryption keys)
+    SSH Username with Private Key
+    Certificate
+    File (e.g., configuration files, certificates)
+
+2. Steps to Create Credentials
+Install the Credentials Plugin:
+    Go to Manage Jenkins > Manage Plugins.
+    Search for and install the Credentials Plugin (if not already installed).
+
+Add Credentials:
+    Go to Manage Jenkins > Manage Credentials.
+    Click on the domain (e.g., global) and then Add Credentials.
+
+Select the Credential Type:
+    Choose the appropriate credential type and fill in the required fields.
+
+
+#### 2.1 Username and Password
+
+- Store a username and password for accessing a database or a version control system (e.g., GitHub).
+Steps to Create:
+    Go to Manage Jenkins > Manage Credentials.
+    Click Add Credentials.
+    Select Username and Password.
+    Fill in the fields:
+        Username: db-user
+        Password: db-password
+        ID: db-credentials (optional, but recommended for easy reference).
+
+Using in Pipeline:
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
+                        sh 'echo "Username: $DB_USER"'
+                        sh 'echo "Password: $DB_PASSWORD"'
+                    }
+                }
+            }
+        }
+    }
+
+
+#### 2.2 Secret Text
+-  Store an API token or encryption key.
+Steps to Create:
+    Go to Manage Jenkins > Manage Credentials.
+    Click Add Credentials.
+    Select Secret Text.
+    Fill in the fields:
+        Secret: your-api-token
+        ID: api-token (optional, but recommended for easy reference).
+
+Using in Pipeline:
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([string(credentialsId: 'api-token', variable: 'API_TOKEN')]) {
+                        sh 'echo "API Token: $API_TOKEN"'
+                    }
+                }
+            }
+        }
+    }
+
+
+#### 2.3 SSH Username with Private Key
+
+- Store an SSH private key for accessing remote servers or Git repositories.
+Steps to Create:
+    Go to Manage Jenkins > Manage Credentials.
+    Click Add Credentials.
+    Select SSH Username with Private Key.
+    Fill in the fields:
+        Username: git-user
+        Private Key: Paste the private key or upload the key file.
+        ID: ssh-key (optional, but recommended for easy reference).
+
+Using in Pipeline:
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                        sh 'echo "SSH User: $SSH_USER"'
+                        sh 'echo "SSH Key: $SSH_KEY"'
+                    }
+                }
+            }
+        }
+    }
+
+
+#### 2.4 Certificate
+-  Store a certificate file for secure communication (e.g., SSL/TLS).
+Steps to Create:
+
+Go to Manage Jenkins > Manage Credentials.
+Click Add Credentials.
+Select Certificate.
+Fill in the fields:
+    Certificate: Upload the certificate file.
+    Password: (Optional) Password for the certificate.
+    ID: ssl-certificate (optional, but recommended for easy reference).
+
+Using in Pipeline:
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([certificate(credentialsId: 'ssl-certificate', keystoreVariable: 'KEYSTORE')]) {
+                        sh 'echo "Keystore: $KEYSTORE"'
+                    }
+                }
+            }
+        }
+    }
+
+#### 2.5 File
+
+- Store a configuration file or other sensitive files.
+
+Steps to Create:
+    Go to Manage Jenkins > Manage Credentials.
+    Click Add Credentials.
+    Select File.
+        Fill in the fields:
+        File: Upload the file.
+        ID: config-file (optional, but recommended for easy reference).
+
+Using in Pipeline:
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([file(credentialsId: 'config-file', variable: 'CONFIG_FILE')]) {
+                        sh 'echo "Config File: $CONFIG_FILE"'
+                    }
+                }
+            }
+        }
+    }
+
+
+##  Jenkins Security and Best Practices
+
+#### 1.1 Set up User Authentication and Authorization
+
+Why is it important?
+    Prevents unauthorized access to Jenkins.
+    Ensures only authorized users can perform specific actions (e.g., create jobs, manage plugins).
+
+Steps to Set Up Authentication:
+    Go to Manage Jenkins > Configure Global Security.
+    Enable Security and select Jenkins’ own user database.
+    Enable Allow users to sign up (optional for self-registration).
+    Enable Matrix-based security or Role-Based Strategy for granular control.
+Example:
+    Create a user developer with read-only access to jobs.
+    Create an admin user jenkins-admin with full control over Jenkins.
+
+
+#### 1.2 Use Credentials Management (e.g., Jenkins Credentials Plugin)
+
+Why use Credentials Plugin?
+    Securely store and manage sensitive information (e.g., API keys, passwords).
+    Avoid hardcoding credentials in pipelines.
+
+Steps to Use Credentials Plugin:
+    Install the Credentials Plugin (if not already installed).
+    Go to Manage Jenkins > Manage Credentials.
+    Add credentials (e.g., username/password, SSH key, secret text).
+    Use credentials in pipelines using the credentials() function.
+
+Example:
+    Store a GitHub API token as a secret text credential with ID github-token.
+    Use it in a pipeline:
+
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                        sh 'echo $GITHUB_TOKEN'
+                    }
+                }
+            }
+        }
+    }
+
+
+#### 1.3 Best Practices
+
+a) Organize Jobs and Pipelines
+
+Why organize jobs?
+    Improves maintainability and reduces clutter.
+    Makes it easier to locate and manage jobs.
+
+Best Practices:
+    Use folders to group related jobs (e.g., by project or team).
+    Use naming conventions (e.g., project-name-job-type).
+
+Example:
+    Folder: Project-A
+        Jobs: Project-A-Build, Project-A-Deploy
+    Folder: Project-B
+        Jobs: Project-B-Build, Project-B-Test
+
+b) Use Declarative Pipelines for Readability
+
+Why use declarative pipelines?
+    Easier to read and maintain compared to scripted pipelines.
+    Provides a structured syntax for defining pipelines.
+
+c) Avoid Hardcoding Credentials in Pipelines
+
+Why avoid hardcoding?
+    Hardcoded credentials are a security risk.
+    Difficult to manage and rotate credentials.
+
+Best Practices:
+    Use the Jenkins Credentials Plugin to store and manage credentials.
+    Reference credentials in pipelines using withCredentials.
+
+Example:
+Bad Practice (Hardcoding):
+
+    pipeline {
+        agent any
+        stages {
+            stage('Deploy') {
+                steps {
+                    sh 'scp -i /path/to/private.key user@server:/path/to/deploy'
+                }
+            }
+        }
+    }
+
+Good Practice (Using Credentials Plugin):
+
+    pipeline {
+        agent any
+        stages {
+            stage('Deploy') {
+                steps {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                        sh 'scp -i $SSH_KEY user@server:/path/to/deploy'
+                    }
+                }
+            }
+        }
+    }
+
