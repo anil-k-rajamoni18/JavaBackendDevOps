@@ -31,10 +31,10 @@ pipeline {
                     script {
                         sshagent(credentials: ['ssh-ec2-credentials']) {
                             // Copy the JAR file to the remote server
-                            sh 'scp -o StrictHostKeyChecking=no target/hello-maven.jar ubuntu@ec2-13-232-241-46.ap-south-1.compute.amazonaws.com:/home/ubuntu/projects'
+                            sh 'scp -o StrictHostKeyChecking=no target/hello-maven.jar ubuntu@ec2-15-206-189-127.ap-south-1.compute.amazonaws.com:/home/ubuntu/projects'
 
                             // Run the application on the remote server
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-232-241-46.ap-south-1.compute.amazonaws.com "nohup java -jar /home/ubuntu/projects/hello-maven.jar > /home/ubuntu/projects/app.log 2>&1 &"'
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-15-206-189-127.ap-south-1.compute.amazonaws.com "nohup java -jar /home/ubuntu/projects/hello-maven.jar > /home/ubuntu/projects/app.log 2>&1 &"'
                         }
                     }
                 }
