@@ -58,4 +58,5 @@ jacocoTestReport {
 	}
 }
 
+
 build.dependsOn jacocoTestReport
