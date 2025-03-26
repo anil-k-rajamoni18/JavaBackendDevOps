@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'IMG_VERSION', defaultValue: '0.0.1', description: 'Img Version to deploy')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the SpringBoot Gradle project...'
+                dir('projects/booking-api') {
+                    sh './gradlew clean build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running unit tests...'
+                dir('projects/booking-api') {
+                    sh './gradlew test'
+                }
+            }
+            post {
+                always {
+                    junit 'projects/booking-api/build/reports/jacoco/test/*.xml'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dir("projects/booking-api") {
+                    echo "building the docker image"
+                    sh "docker build -t akumarraj/booking-api:${params.IMG_VERSION} ."
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+               dir("projects/booking-api"){
+                    withCredentials([usernamePassword('docker-hub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                          sh "docker push akumarraj/booking-api:${params.IMG_VERSION}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('projects/booking-api') {
+                    script {
+                        sshagent(credentials: ['ssh-ec2-credentials']) {
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-15-206-189-127.ap-south-1.compute.amazonaws.com "cd /home/ubuntu/projects && docker pull akumarraj/booking-api:latest && docker stop book-container || true && docker rm book-container || true && docker run -d --name book-container akumarraj/booking-api:latest"'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs() // Delete the workspace
+        }
+    }
+}
