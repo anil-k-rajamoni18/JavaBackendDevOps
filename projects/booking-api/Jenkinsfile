@@ -52,8 +52,9 @@ pipeline {
         stage('Docker Push') {
             steps {
                dir("projects/booking-api"){
-                    withCredentials([usernamePassword('docker-hub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                    echo "pushing the docker image"
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                          sh "docker login -u $USERNAME -p $PASSWORD"
                           sh "docker push akumarraj/booking-api:${params.IMG_VERSION}"
                     }
                 }
@@ -65,7 +66,7 @@ pipeline {
                 dir('projects/booking-api') {
                     script {
                         sshagent(credentials: ['ssh-ec2-credentials']) {
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-15-206-189-127.ap-south-1.compute.amazonaws.com "cd /home/ubuntu/projects && docker pull akumarraj/booking-api:latest && docker stop book-container || true && docker rm book-container || true && docker run -d --name book-container akumarraj/booking-api:latest"'
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-235-80-222.ap-south-1.compute.amazonaws.com "cd /home/ubuntu/projects && docker pull akumarraj/booking-api:latest && docker stop book-container || true && docker rm book-container || true && docker run -d --name book-container akumarraj/booking-api:latest"'
                         }
                     }
                 }
