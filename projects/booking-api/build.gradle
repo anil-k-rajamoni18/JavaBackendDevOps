@@ -45,6 +45,17 @@ jar {
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
+
+	reports {
+		junitXml.required = true  // This generates XML reports for Jenkins
+		html.required = true      // Human-readable reports
+	}
+
+	// Optional: Configure test logging
+	testLogging {
+		events "passed", "skipped", "failed"
+		exceptionFormat "full"
+	}
 }
 
 
