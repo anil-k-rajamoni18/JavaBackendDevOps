@@ -1,40 +1,50 @@
-    pipeline {
-        agent any
-        environment {
-            VERSION = '1.0.0'
-        }
-        stages {
-            stage('Setup Virtual Environment') {
-                dir('projects/python-calci-app') {
-                    steps {
-                        echo 'Setting up Python virtual environment...'
-                        sh 'python3 -m venv venv'
-                        sh 'source venv/bin/activate'
-                    }
-                }
-            }
-            stage('Install Dependencies') {
-                dir('projects/python-calci-app') {
-                    steps {
-                        echo 'Installing dependencies...'
-                        sh 'pip install -r requirements.txt'
-                    } 
-                }
-            }
-            stage('Lint') {
-                dir('projects/python-calci-app') {
-                    steps {
-                        echo 'Running linting...'
-                        sh 'pylint *.py'
-                    }
-                }
-            }
-            stage('Test') {
+pipeline {
+    agent any
+    environment {
+        VERSION = '1.0.0'
+    }
+    stages {
+        stage('Setup Virtual Environment') {
+            dir('projects/python-calci-app') {
                 steps {
-                    dir('projects/python-calci-app') {
-                        echo 'Running unit tests...'
-                        sh 'pytest'
-                    }
+                    echo 'Setting up Python virtual environment...'
+                    sh 'python3 -m venv venv'
+                    sh 'source venv/bin/activate'
                 }
             }
         }
+        stage('Install Dependencies') {
+            dir('projects/python-calci-app') {
+                steps {
+                    echo 'Installing dependencies...'
+                    sh 'pip install -r requirements.txt'
+                } 
+            }
+        }
+        stage('Lint') {
+            dir('projects/python-calci-app') {
+                steps {
+                    echo 'Running linting...'
+                    sh 'pylint *.py'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                dir('projects/python-calci-app') {
+                    echo 'Running unit tests...'
+                    sh 'pytest'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
