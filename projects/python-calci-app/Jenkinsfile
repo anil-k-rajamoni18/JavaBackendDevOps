@@ -5,8 +5,8 @@ pipeline {
     }
     stages {
         stage('Setup Virtual Environment') {
-            dir('projects/python-calci-app') {
-                steps {
+            steps {
+                dir('projects/python-calci-app') {
                     echo 'Setting up Python virtual environment...'
                     sh 'python3 -m venv venv'
                     sh 'source venv/bin/activate'
@@ -14,16 +14,16 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            dir('projects/python-calci-app') {
-                steps {
+            steps {
+                dir('projects/python-calci-app') {
                     echo 'Installing dependencies...'
                     sh 'pip install -r requirements.txt'
-                } 
-            }
+                }
+            } 
         }
         stage('Lint') {
-            dir('projects/python-calci-app') {
-                steps {
+            steps {
+                dir('projects/python-calci-app') {
                     echo 'Running linting...'
                     sh 'pylint *.py'
                 }
