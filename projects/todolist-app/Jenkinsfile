@@ -31,7 +31,11 @@ pipeline {
             steps {
                 dir ('projects/todolist-app') {
                     sh 'echo "Building the Flask to-do list application..."'
-                    sh 'pip install -r requirements.txt'
+                    sh '''
+                        export PIP_CACHE_DIR=/tmp/pip-cache
+                        mkdir -p ${PIP_CACHE_DIR}
+                        pip install -r requirements.txt
+                    '''
                 }
 
             }
