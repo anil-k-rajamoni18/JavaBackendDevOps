@@ -44,7 +44,7 @@ pipeline {
             steps {
                 dir ('projects/todolist-app') {
                     sh 'echo "Running tests..."'
-                    sh ' venv/bin/python -m pytest tests/'
+                    sh ' venv/bin/python3 -m pytest tests/'
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 dir ('projects/todolist-app') {
                     sh 'echo "Running PyLint..."'
-                    sh ' venv/bin/python -m pylint app.py'
+                    sh ' venv/bin/python3 -m pylint app.py'
                 }
             }
         }
