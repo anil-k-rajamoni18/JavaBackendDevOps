@@ -8,23 +8,15 @@ pipeline {
             steps {
                 dir('projects/python-calci-app') {
                     echo 'Setting up Python virtual environment...'
-                    //sh 'python3 -m venv venv'
-                    //sh 'source venv/bin/activate'
-                                        
                     sh '''#!/bin/bash
+                    python3 --version || echo "Python3 not found"
+                    python3 -m pip --version || echo "pip not installed"
                     python3 -m venv venv
                     source venv/bin/activate
+                    pip install -r requirements.txt
                     '''
                 }
             }
-        }
-        stage('Install Dependencies') {
-            steps {
-                dir('projects/python-calci-app') {
-                    echo 'Installing dependencies...'
-                    sh 'pip install -r requirements.txt'
-                }
-            } 
         }
         stage('Lint') {
             steps {

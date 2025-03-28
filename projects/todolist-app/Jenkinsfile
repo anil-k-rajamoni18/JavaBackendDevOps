@@ -121,5 +121,8 @@ pipeline {
                 to: 'akrajdev18@gmail.com'
             )
         }
+        always {
+            cleanWs()
+        }
     }
 }
