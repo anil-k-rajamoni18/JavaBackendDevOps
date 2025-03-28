@@ -33,7 +33,6 @@ def add_task():
     data = request.get_json()
     if not data.get('title'):
         return jsonify({"error": "Title is required"}), 400
-    
     task = {
         'id': len(tasks) + 1,
         'title': data['title'],
