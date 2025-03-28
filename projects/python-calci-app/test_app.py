@@ -14,7 +14,6 @@ from app import add, subtract, multiply, divide
 
 class TestApp(unittest.TestCase):
     """Test cases for calculator application functions."""
-    
     def test_add(self):
         """Test addition operation with various number combinations."""
         self.assertEqual(add(2, 3), 5)
