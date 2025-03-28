@@ -22,7 +22,10 @@ pipeline {
             steps {
                 dir('projects/python-calci-app') {
                     echo 'Running linting...'
-                    sh 'pylint *.py'
+                    sh '''#!/bin/bash
+                    source venv/bin/activate
+                    pylint *.py
+                    '''
                 }
             }
         }
@@ -30,7 +33,10 @@ pipeline {
             steps {
                 dir('projects/python-calci-app') {
                     echo 'Running unit tests...'
-                    sh 'pytest'
+                    sh '''#!/bin/bash
+                    source venv/bin/activate
+                    pytest
+                    '''
                 }
             }
         }
