@@ -27,7 +27,7 @@ pipeline {
         }
         */
 
-        stage('Build') {
+        stage('Setup VirtualEnv & Build') {
             steps {
                 dir ('projects/todolist-app') {
                     sh 'echo "Building the Flask to-do list application..."'
