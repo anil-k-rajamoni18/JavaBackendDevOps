@@ -1,7 +1,8 @@
 pipeline {
-    agent any
-    environment {
-        VERSION = '1.0.0'
+    agent {
+        docker {
+            image 'python:3.12-alpine'
+        }
     }
     stages {
         stage('Setup Virtual Environment') {
@@ -22,10 +23,7 @@ pipeline {
             steps {
                 dir('projects/python-calci-app') {
                     echo 'Running linting...'
-                    sh '''#!/bin/bash
-                    source venv/bin/activate
-                    pylint *.py
-                    '''
+                    sh 'pylint *.py'
                 }
             }
         }
@@ -33,10 +31,7 @@ pipeline {
             steps {
                 dir('projects/python-calci-app') {
                     echo 'Running unit tests...'
-                    sh '''#!/bin/bash
-                    source venv/bin/activate
-                    pytest
-                    '''
+                    sh 'pytest'
                 }
             }
         }
