@@ -78,7 +78,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sshagent([SSH_CREDENTIALS]) {
+                    sshagent(credentials: [SSH_CREDENTIALS]) {
                         // Pull the Docker image on the EC2 instance
                         sh """
                             ssh -o StrictHostKeyChecking=no ${EC2_HOST} \
