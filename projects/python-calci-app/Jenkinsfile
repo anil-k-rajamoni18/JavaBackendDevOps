@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.12-alpine'
-        }
-    }
+    agent any
     stages {
         stage('Setup Virtual Environment') {
             steps {
