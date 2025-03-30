@@ -942,9 +942,6 @@ docker login
 # 🐳 Advanced Docker Concepts
 
 ---
-
-## 1️⃣ Docker Swarm: Native Container Orchestration
-
 ## 1️⃣ Docker Swarm: Native Container Orchestration 🚢
 
 ### 🔹 What is Docker Swarm?
