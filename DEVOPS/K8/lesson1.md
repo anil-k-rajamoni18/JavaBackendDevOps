@@ -17,10 +17,15 @@ Kubernetes (K8s) is an open-source container orchestration platform designed to 
 
 ## Benefits of Kubernetes 🌟
 ✅ Automates application deployment and scaling.
+
 ✅ Efficient resource utilization with optimized scheduling.
+
 ✅ Provides self-healing (restarts failed containers, replaces unresponsive nodes).
+
 ✅ Load balancing across containers for high availability.
+
 ✅ Manages storage and networking seamlessly.
+
 ✅ Works across multiple cloud providers.
 
 ---
@@ -88,6 +93,7 @@ minikube start
 
 ### K3s 🚀
 🔹 Lightweight Kubernetes distribution designed for edge computing.
+
 🔹 Uses a single binary and minimal resources.
 
 #### Installation Steps:
@@ -138,14 +144,19 @@ minikube service hello-k8s --url
 ## Main Observations 📌
 
 🔹 Kubernetes simplifies container orchestration.
+
 🔹 Requires learning curve for YAML configurations & CLI commands.
+
 🔹 Different distributions (Minikube, K3s, Kind) serve different use cases.
 
 ## Common Issues & Challenges ❗
 
 ⚠️ **Minikube startup issues** (e.g., virtualization not enabled, memory limits).
+
 ⚠️ **Networking problems** (firewall settings, port conflicts).
+
 ⚠️ **Permissions issues** (kubectl authentication failures).
+
 ⚠️ **Pods stuck in pending state** (due to resource constraints).
 
 ---
