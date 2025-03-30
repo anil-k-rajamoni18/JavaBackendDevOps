@@ -59,7 +59,7 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
 | **Isolation**   | Fully isolated environments | Process-level isolation |
 | **Use Case**    | Monolithic applications | Microservices, scalable apps |
 
-![Containers vs VMs](https://www.docker.com/wp-content/uploads/2022/03/VM-vs-Containers.png)
+![Containers vs VMs](https://aqueducttech.com/wp-content/uploads/2021/02/Cloud_VM_Container-1.png)
 
 ---
 
@@ -79,485 +79,528 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
 ✅ **Isolation** – Each container runs in its **own isolated** environment.
 ✅ **Efficiency** – Containers share the **host OS kernel**, making them **lightweight and fast**.
 
+
 ---
 
-## Key Concepts:
-
-1. Docker Images:
-    A read-only template or blueprint used to create containers.
-    Contains the application code, libraries, and dependencies.
-    Built using a Dockerfile.
-    Stored in registries like Docker Hub.
+# 🐳 Docker Key Concepts
 
+## 1️⃣ Docker Images
 
-2. Docker Containers:
-    A running instance of a Docker image.
-    Lightweight, isolated, and portable.
-    Contains everything needed to run the application.
+- 📌 A **read-only template** or blueprint used to create containers.
+- 📦 Contains the **application code, libraries, and dependencies**.
+- 📝 Built using a **Dockerfile**.
+- 🌐 Stored in registries like [Docker Hub](https://hub.docker.com/).
 
-3. Dockerfile:
-    A text file with instructions to build a Docker image.
-    Defines the base image, dependencies, and commands to run the application.
-    Example:
+## 2️⃣ Docker Containers
 
-        FROM ubuntu:20.04
-        RUN apt-get update && apt-get install -y python3
-        COPY . /app
-        CMD ["python3", "/app/main.py"]
+- 🚀 A **running instance** of a Docker image.
+- 🔄 **Lightweight, isolated, and portable**.
+- ✅ Contains **everything needed to run the application**.
 
-4. Docker Hub:
-    A public registry for Docker images.
-    Hosts official and community images (e.g., nginx, mysql, python).
-    You can push and pull images to/from Docker Hub.
+## 3️⃣ Dockerfile 📝
 
-5. Docker Architecture and Workflow:
-    Docker Daemon: Background service that manages Docker objects (images, containers, networks, volumes).
-    Docker Client: CLI tool to interact with the Docker daemon.
-    Docker Registry: Stores Docker images (e.g., Docker Hub)
-    Docker Engine: The software that runs and manages containers on your computer or server.
-    Workflow:
-        Write a Dockerfile.
-        Build an image using docker build.
-        Run a container using docker run.
-        Push the image to a registry (optional).
+- A **text file** with instructions to build a **Docker image**.
+- Defines the **base image, dependencies, and commands** to run the application.
+- **Example:**
 
+  ```dockerfile
+  FROM ubuntu:20.04
+  RUN apt-get update && apt-get install -y python3
+  COPY . /app
+  CMD ["python3", "/app/main.py"]
+  ```
 
-### Install Docker
-1. Windows:
-    Install Docker Desktop from Docker's official website (https://www.docker.com/products/docker-desktop/).
-    Enable WSL 2 (Windows Subsystem for Linux) for better performance.
+## 4️⃣ Docker Hub 🌐
 
-2. macOS:
-    Install Docker Desktop from Docker's official website (https://www.docker.com/products/docker-desktop/).
+- 🏢 A **public registry** for Docker images.
+- 📂 Hosts **official and community images** (e.g., `nginx`, `mysql`, `python`).
+- 🔄 You can **push and pull** images to/from [Docker Hub](https://hub.docker.com/).
 
-3. Linux:
-    Follow the official installation guide for your distribution (e.g., Ubuntu, CentOS).
-    Example for Ubuntu:
-        sudo apt-get update
-        sudo apt-get install docker.io
-        sudo systemctl start docker
-        sudo systemctl enable docker
+## 5️⃣ Docker Architecture & Workflow 🏗️
 
-4. Verify Installation:
-    Run the following command to check Docker version:
-        docker --version
+### Components:
+- **Docker Daemon** 🖥️: Background service that manages Docker objects (images, containers, networks, volumes).
+- **Docker Client** 🖊️: CLI tool to interact with the Docker daemon.
+- **Docker Registry** 📦: Stores Docker images (e.g., Docker Hub).
+- **Docker Engine** ⚙️: The software that runs and manages containers on your computer or server.
 
+### Workflow 🔄:
+1. ✍️ **Write a Dockerfile**.
+2. 🏗️ **Build an image** using `docker build`.
+3. 🚀 **Run a container** using `docker run`.
+4. 📤 **Push the image** to a registry (optional).
 
+---
 
-### Basic Docker Commands
+# 🔧 Install Docker
 
-1. Container Management
+## 🖥️ Windows:
+- 📥 Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+- 🔧 Enable **WSL 2 (Windows Subsystem for Linux)** for better performance.
 
-    docker run <image>: Run a container from an image.
-    docker start <container>: Start a stopped container.
-    docker stop <container>: Stop a running container.
-    docker restart <container>: Restart a container.
-    docker rm <container>: Remove a stopped container.
-    docker ps: List running containers.
-    docker ps -a: List all containers (running and stopped).
-    docker logs <container>: View logs of a container.
-    docker exec -it <container> <command>: Run a command inside a running container (e.g., docker exec -it mycontainer bash).
+## 🍏 macOS:
+- 📥 Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-2. Image Management
+## 🐧 Linux:
+- 📜 Follow the **official installation guide** for your distribution (e.g., Ubuntu, CentOS).
+- **Example for Ubuntu**:
 
-    docker images: List all images.
-    docker pull <image>: Download an image from a registry (e.g., Docker Hub).
-    docker rmi <image>: Remove an image.
-    docker build -t <tag> <path>: Build an image from a Dockerfile.
-    docker push <image>: Push an image to a registry.
+  ```bash
+  sudo apt-get update
+  sudo apt-get install docker.io
+  sudo systemctl start docker
+  sudo systemctl enable docker
+  ```
 
-3. System Information
-    docker version: Show Docker version information.
-    docker info: Display system-wide information.
+## ✅ Verify Installation:
+- Run the following command to check Docker version:
 
-### Intermediate Docker Commands
+  ```bash
+  docker --version
+  
 
-1. Networking
+--- 
 
-    docker network ls: List all networks.
-    docker network create <network_name>: Create a new network.
-    docker network inspect <network_name>: Inspect a network.
-    docker network connect <network> <container>: Connect a container to a network.
-    docker network disconnect <network> <container>: Disconnect a container from a network.
 
+# 🚀 Basic Docker Commands
 
-3. Volumes (Persistent Storage)
+## 🏗️ Container Management
 
-    docker volume ls: List all volumes.
-    docker volume create <volume_name>: Create a new volume.
-    docker volume inspect <volume_name>: Inspect a volume.
-    docker volume rm <volume_name>: Remove a volume.
+- `docker run <image>`: Run a container from an image.
+- `docker start <container>`: Start a stopped container.
+- `docker stop <container>`: Stop a running container.
+- `docker restart <container>`: Restart a container.
+- `docker rm <container>`: Remove a stopped container.
+- `docker ps`: List running containers.
+- `docker ps -a`: List all containers (running and stopped).
+- `docker logs <container>`: View logs of a container.
+- `docker exec -it <container> <command>`: Run a command inside a running container (e.g., `docker exec -it mycontainer bash`).
 
+## 🖼️ Image Management
 
-3. Docker Compose (Multi-Container Apps)
+- `docker images`: List all images.
+- `docker pull <image>`: Download an image from a registry (e.g., Docker Hub).
+- `docker rmi <image>`: Remove an image.
+- `docker build -t <tag> <path>`: Build an image from a Dockerfile.
+- `docker push <image>`: Push an image to a registry.
 
-    docker-compose up: Start containers defined in a docker-compose.yml file.
-    docker-compose down: Stop and remove containers, networks, and volumes.
-    docker-compose logs: View logs for services in a Compose file.
-    docker-compose ps: List running services in a Compose file.
+## 🖥️ System Information
 
+- `docker version`: Show Docker version information.
+- `docker info`: Display system-wide information.
 
-### Advanced Docker Commands
+---
 
-1. Container Debugging
+# ⚙️ Intermediate Docker Commands
 
-    docker inspect <container>: Get detailed information about a container.
-    docker stats: Display live resource usage statistics for containers.
-    docker top <container>: Show running processes in a container.
-    docker diff <container>: Inspect changes to files or directories in a container.
+## 🌐 Networking
 
-2. Image Management (Advanced)
+- `docker network ls`: List all networks.
+- `docker network create <network_name>`: Create a new network.
+- `docker network inspect <network_name>`: Inspect a network.
+- `docker network connect <network> <container>`: Connect a container to a network.
+- `docker network disconnect <network> <container>`: Disconnect a container from a network.
 
-    docker save <image> -o <file.tar>: Save an image to a tar file.
-    docker load -i <file.tar>: Load an image from a tar file.
-    docker history <image>: Show the history of an image.
-    docker tag <image> <new_tag>: Tag an image with a new name or version.
+## 💾 Volumes (Persistent Storage)
 
-3. System Cleanup
+- `docker volume ls`: List all volumes.
+- `docker volume create <volume_name>`: Create a new volume.
+- `docker volume inspect <volume_name>`: Inspect a volume.
+- `docker volume rm <volume_name>`: Remove a volume.
 
-    docker system prune: Remove all unused containers, networks, and images.
-    docker system prune -a: Remove all unused containers, networks, images, and volumes.
-    docker container prune: Remove all stopped containers.
-    docker image prune: Remove unused images.
+## 🏗️ Docker Compose (Multi-Container Apps)
 
-4. Swarm Mode (Container Orchestration)
+- `docker-compose up`: Start containers defined in a `docker-compose.yml` file.
+- `docker-compose down`: Stop and remove containers, networks, and volumes.
+- `docker-compose logs`: View logs for services in a Compose file.
+- `docker-compose ps`: List running services in a Compose file.
 
-    docker swarm init: Initialize a Docker Swarm.
-    docker swarm join: Join a worker node to a Swarm.
-    docker service create <image>: Create a service in Swarm mode.
-    docker service ls: List services in a Swarm.
-    docker service scale <service>=<replicas>: Scale a service up or down.
+---
 
-5. Security
+# 🔥 Advanced Docker Commands
 
-    docker scan <image>: Scan an image for vulnerabilities (requires Docker Scout).
-    docker trust sign <image>: Sign an image for secure distribution.
+## 🛠️ Container Debugging
 
-6. Logs and Monitoring
+- `docker inspect <container>`: Get detailed information about a container.
+- `docker stats`: Display live resource usage statistics for containers.
+- `docker top <container>`: Show running processes in a container.
+- `docker diff <container>`: Inspect changes to files or directories in a container.
 
-    docker events: View real-time events from the Docker daemon.
-    docker logs --tail <number> <container>: Show the last n lines of logs.
+## 🖼️ Image Management (Advanced)
 
-7. Tips
-    Use --help with any command to see its usage and options (e.g., docker run --help).
-    Use docker-compose for managing multi-container applications.
-    Use docker swarm for container orchestration and scaling.
+- `docker save <image> -o <file.tar>`: Save an image to a tar file.
+- `docker load -i <file.tar>`: Load an image from a tar file.
+- `docker history <image>`: Show the history of an image.
+- `docker tag <image> <new_tag>`: Tag an image with a new name or version.
 
-#### Homework:
-    Install Docker on your system if you haven’t already.
-    Run the hello-world container and explore its output.
-    Pull an image (e.g., nginx) and run it as a container.
-    Use docker ps, docker images, and docker logs to inspect your containers and images.
+## 🧹 System Cleanup
 
-## Dockerfile and Building Images
+- `docker system prune`: Remove all unused containers, networks, and images.
+- `docker system prune -a`: Remove all unused containers, networks, images, and volumes.
+- `docker container prune`: Remove all stopped containers.
+- `docker image prune`: Remove unused images.
 
-1. Dockerfile Basics
-    A Dockerfile is a text file that contains instructions to build a Docker image. 
-    Each instruction creates a layer in the image.
+## ⚖️ Swarm Mode (Container Orchestration)
 
-Key Instructions:
-a) FROM:
+- `docker swarm init`: Initialize a Docker Swarm.
+- `docker swarm join`: Join a worker node to a Swarm.
+- `docker service create <image>`: Create a service in Swarm mode.
+- `docker service ls`: List services in a Swarm.
+- `docker service scale <service>=<replicas>`: Scale a service up or down.
 
-    Specifies the base image for the Dockerfile.
-    Example: FROM ubuntu:20.04 or FROM python:3.9.
+## 🔒 Security
 
-b) RUN:
+- `docker scan <image>`: Scan an image for vulnerabilities (requires Docker Scout).
+- `docker trust sign <image>`: Sign an image for secure distribution.
 
-    Executes commands during the image build process.
-    Example: RUN apt-get update && apt-get install -y curl.
+## 📊 Logs and Monitoring
 
-c) COPY:
+- `docker events`: View real-time events from the Docker daemon.
+- `docker logs --tail <number> <container>`: Show the last `n` lines of logs.
 
-        Copies files or directories from the host to the container.
-        Example: COPY ./app /app.
+## 💡 Tips
 
-d) ADD:
+- Use `--help` with any command to see its usage and options (e.g., `docker run --help`).
+- Use `docker-compose` for managing multi-container applications.
+- Use `docker swarm` for container orchestration and scaling.
 
-    Similar to COPY, but with additional features like:
-        Extracting tar files automatically.
-        Downloading files from URLs.
-    Prefer COPY unless you need these extra features.
+---
 
+# 📌 Homework
 
-e) CMD:
+- Install Docker on your system if you haven’t already.
+- Run the `hello-world` container and explore its output.
+- Pull an image (e.g., `nginx`) and run it as a container.
+- Use `docker ps`, `docker images`, and `docker logs` to inspect your containers and images.
 
-    Provides a default command to run when the container starts.
-    Only one CMD is allowed in a Dockerfile.
-    Example: CMD ["python", "app.py"]
+![Docker Workflow](https://www.docker.com/wp-content/uploads/2023/03/docker-compose-diagram.png)
 
-f) ENTRYPOINT:
+--- 
 
-    Similar to CMD, but the command is not overridden by command-line arguments.
-    Often used to define the main executable of the container.
-    Example: ENTRYPOINT ["python"].
+# 🐳 Dockerfile and Building Images
 
-g) EXPOSE:
+## 1️⃣ Dockerfile Basics
+A **Dockerfile** is a text file containing instructions to build a Docker image. Each instruction creates a layer in the image.
 
-    Informs Docker that the container listens on specific network ports.
-    Example: EXPOSE 8080.
+### 📌 Key Instructions:
 
-=> Difference Between ADD and COPY:
-    Use COPY for simply copying files/directories.
-    Use ADD if you need to extract tar files or download files from URLs.
+### 🔹 `FROM`
+Specifies the **base image** for the Dockerfile.
+```dockerfile
+FROM ubuntu:20.04
+FROM python:3.9
+```
 
-=> Difference Between CMD and ENTRYPOINT:
-    CMD provides default arguments for the container, which can be overridden at runtime.
-    ENTRYPOINT defines the main executable, and arguments passed at runtime are appended to it.
+### 🔹 `RUN`
+Executes commands **during the image build process**.
+```dockerfile
+RUN apt-get update && apt-get install -y curl
+```
 
+### 🔹 `COPY`
+Copies files or directories **from the host to the container**.
+```dockerfile
+COPY ./app /app
+```
 
-*Example 1: Python App*
+### 🔹 `ADD`
+Similar to `COPY`, but with additional features:
+- Extracts **tar files** automatically.
+- Downloads files from **URLs**.
+```dockerfile
+ADD myfile.tar.gz /app/
+ADD https://example.com/file.zip /app/
+```
+🛠 **Prefer `COPY` unless you need these extra features.**
 
-    # Use an official Python runtime as the base image
-    FROM python:3.9-slim
+### 🔹 `CMD`
+Provides a **default command** to run when the container starts (only one `CMD` allowed).
+```dockerfile
+CMD ["python", "app.py"]
+```
 
-    # Set the working directory in the container
-    WORKDIR /app
+### 🔹 `ENTRYPOINT`
+Similar to `CMD`, but the command **is not overridden** by command-line arguments.
+```dockerfile
+ENTRYPOINT ["python"]
+```
 
-    # Copy the requirements file into the container
-    COPY requirements.txt .
+### 🔹 `EXPOSE`
+Informs Docker that the container **listens on specific network ports**.
+```dockerfile
+EXPOSE 8080
+```
 
-    # Install dependencies
-    RUN pip install --no-cache-dir -r requirements.txt
+---
 
-    # Copy the rest of the application code
-    COPY . .
+## 🔄 Difference Between `ADD` and `COPY`
+✅ **Use `COPY`** for simply copying files/directories.
+✅ **Use `ADD`** if you need to **extract tar files** or **download files from URLs**.
 
-    # Expose port 5000
-    EXPOSE 5000
+## 🔄 Difference Between `CMD` and `ENTRYPOINT`
+✅ **`CMD`** provides default arguments for the container, which can be overridden at runtime.
+✅ **`ENTRYPOINT`** defines the main executable, and arguments passed at runtime **are appended to it**.
 
-    # Define the command to run the app
-    CMD ["python", "app.py"]
+---
 
+## 🚀 Example Dockerfiles
 
-*Example 2: Node.js App*
+### 🐍 Example 1: **Python App**
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["python", "app.py"]
+```
 
-    # Use an official Node.js runtime as the base image
-    FROM node:18
+### 🌍 Example 2: **Node.js App**
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+# Define the command to run the app
+CMD ["node", "index.js"]
+```
+
+### ☕ Example 3: **Java Spring Boot App**
+```dockerfile
+FROM openjdk:17-jre-slim
+WORKDIR /app
+COPY target/myapp.jar .
+EXPOSE 8080
+CMD ["java", "-jar", "myapp.jar"]
+```
+
+---
+
+## 📦 Building and Running the Image
+
+🔹 **Build the image:**
+```sh
+docker build -t my-app .
+```
+
+🔹 **Run the container:**
+```sh
+docker run -p 5000:5000 my-app  # Adjust ports as needed
+
+--- 
+
+
+# 🚢 Docker Layered File System & Multi-Stage Builds
+
+## 🗂 Layered File System
+- Docker images are built in **layers**. Each instruction in the Dockerfile creates a new layer.
+- **Layers are cached**, so if a layer hasn’t changed, Docker reuses the cached layer during builds.
+- Optimize your Dockerfile to **minimize the number of layers** and **reduce image size**.
+
+### ✅ Optimization Tips:
+🔹 **Combine multiple RUN commands into one:**
+```bash
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+```
+🔹 **Use .dockerignore** to exclude unnecessary files from being copied into the image.
+
+---
+
+## 🔄 Multi-Stage Builds
+
+- Multi-stage builds allow you to use **multiple `FROM` statements** in a single Dockerfile.
+- Each `FROM` statement starts a **new build stage**, and you can selectively **copy files** from one stage to another.
+- This helps **reduce the final image size** by discarding unnecessary build artifacts.
+
+### 📌 How Multi-Stage Builds Work:
+**1️⃣ Build Stage:**  
+   - Used to **compile or build** your application.  
+   - Includes all the **tools and dependencies** needed for building (e.g., compilers, SDKs).
+
+**2️⃣ Runtime Stage:**  
+   - Used to **run your application**.  
+   - Includes only the **runtime dependencies** and the final build artifacts (e.g., compiled binaries, packaged files).
+
+### 🎯 Benefits of Multi-Stage Builds:
+✅ **Smaller Final Image**  
+✅ **Improved Security**  
+✅ **Faster Deployment**  
+
+---
+
+## 🚀 Multi-Stage Dockerfile Examples
+
+### 🔹 Example 1: Golang App 🐹
+```dockerfile
+# Stage 1: Build the application
+FROM golang:1.20 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o myapp .
+
+# Stage 2: Run the application
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/myapp .
+CMD ["./myapp"]
+```
+📌 **Explanation:**
+- **Stage 1 (Builder):** Uses Go compiler to **build the binary**.
+- **Stage 2 (Runtime):** Uses a **lightweight Alpine image** and only includes the **compiled binary**.
+
+---
+
+### 🔹 Example 2: Python App 🐍
+```dockerfile
+# Stage 1: Build
+FROM python:3.9-slim as builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --user -r requirements.txt
+
+# Stage 2: Final Image
+FROM python:3.9-slim
+WORKDIR /app
+COPY --from=builder /root/.local /root/.local
+COPY . .
+ENV PATH=/root/.local/bin:$PATH
+EXPOSE 5000
+CMD ["python", "app.py"]
+```
+📌 **Explanation:**
+- **Stage 1:** Installs dependencies using `pip`.
+- **Stage 2:** Copies installed dependencies & source code into a clean Python image.
+
+---
+
+### 🔹 Example 3: Node.js App 🌐
+```dockerfile
+# Stage 1: Build dependencies
+FROM node:16 AS deps
+WORKDIR /app
+COPY package.json .
+RUN npm install
+
+# Stage 2: Build the application
+FROM node:16 AS builder
+WORKDIR /app
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+RUN npm run build
+
+# Stage 3: Run the application
+FROM node:16-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["node", "dist/index.js"]
+```
+📌 **Explanation:**
+- **Stage 1:** Installs dependencies.
+- **Stage 2:** Builds the application.
+- **Stage 3:** Runs the application in a **lightweight Node.js runtime**.
+
+---
+
+## 📅 When to Use Multi-Stage Builds?
+✅ **Compiled Languages:** (Go, Java, C++) to **remove build tools** from final image.  
+✅ **Complex Build Processes:** When multiple steps or tools are required at **build time** but not at **runtime**.  
+✅ **Optimizing Image Size:** Reduces the **final image footprint** by discarding unnecessary dependencies.  
+
+---
+
+## 🎯 Key Takeaways
+🚀 Multi-stage builds help create **smaller, more secure Docker images**.  
+📦 Useful for **compiled languages** and **complex build processes**.  
+🔁 Use `COPY --from` to copy files **between stages**.  
+
+💡 **Optimize your builds, reduce image size, and deploy faster!** 🔥
+
+
+--- 
+
+# Docker Volumes and Networking 📦🌐
+
+## 1. Docker Volumes 🗄️
+
+### Why Use Volumes?
+- Containers are **ephemeral** (data is lost when the container stops).
+- Volumes provide **persistent storage** independent of the container lifecycle.
+- Useful for **databases, application data, and shared storage**.
+
+### Volume Commands 🛠️
+```sh
+docker volume create <name>    # Creates a new named volume
+docker volume ls               # Lists all volumes
+docker volume inspect <name>   # Shows volume details (mount point, driver)
+docker volume rm <name>        # Removes a volume
+docker volume prune            # Deletes all unused volumes
+```
+
+### Mounting a Volume in a Container 🚢
+```sh
+docker run -d --name mysql-db -v db_data:/var/lib/mysql mysql:latest
+```
+📌 `-v db_data:/var/lib/mysql` binds the `db_data` volume to the container’s `/var/lib/mysql`.
+
+### Bind Mounts vs. Volumes 🔍
+| Feature         | Volumes | Bind Mounts |
+|---------------|---------|------------|
+| Managed by Docker | ✅ Yes | ❌ No |
+| Portability | ✅ Portable | ❌ Host-dependent |
+| Performance | ✅ Optimized | ❌ Depends on host FS |
+| Use Case | Databases, Persistent Storage | Development (Live Code Reload) |
+
+### Using Bind Mounts 🖇️
+```sh
+docker run -d --name web-app -v /host/path:/container/path nginx:latest
+```
+📌 **Example (Development):**
+```sh
+docker run -d --name dev-app -v $(pwd)/src:/app/src react-app
+```
+
+---
+
+## 2. Docker Networking 🌍
+
+### Default Networks
+- **Bridge (Default):** Isolated network for containers on the same host.
+- **Host:** Bypasses Docker networking, uses host’s network directly.
+- **None:** No networking.
+
+### Network Commands ⚡
+```sh
+docker network ls                            # Lists all networks
+docker network create <name>                 # Creates a custom network
+docker network inspect <name>                # Shows network details
+docker network connect <network> <container> # Connects a container to a network
+docker network disconnect <network> <container> # Disconnects a container
+```
+
+### Creating and Using a Custom Network 🔗
+```sh
+# Create a custom network
+docker network create my-network
+
+# Run containers on the same network
+docker run -d --name web --network my-network nginx
+docker run -d --name db --network my-network mysql
+
+# Containers can communicate using their names as DNS
+ping web  # Inside the 'db' container
+```
+
+---
+📌 **Pro Tip:**
+- Use **volumes** for **persistent storage** like databases.
+- Use **custom networks** for inter-container communication.
 
-    # Set the working directory
-    WORKDIR /app
-
-    # Copy package.json and package-lock.json
-    COPY package*.json ./
-
-    # Install dependencies
-    RUN npm install
-
-    # Copy the rest of the application code
-    COPY . .
-
-    # Expose port 3000
-    EXPOSE 3000
-
-    # Define the command to run the app
-    CMD ["node", "index.js"]
-
-
-*Example 3: Java Spring Boot App*
-
-    # Use an official OpenJDK runtime as the base image
-    FROM openjdk:17-jre-slim
-
-    # Set the working directory
-    WORKDIR /app
-
-    # Copy the JAR file into the container
-    COPY target/myapp.jar .
-
-    # Expose port 8080
-    EXPOSE 8080
-
-    # Define the command to run the app
-    CMD ["java", "-jar", "myapp.jar"]
-
-
--> Build the image: docker build -t my-app .
--> Run the container: docker run -p 5000:5000 my-app  # Adjust ports as needed
-
-
-### Layered File System
-- Docker images are built in layers. Each instruction in the Dockerfile creates a new layer.
-- Layers are cached, so if a layer hasn’t changed, Docker reuses the cached layer during builds.
-- Optimize your Dockerfile to minimize the number of layers and reduce image size.
-- Optimization Tips:
-    a) Combine multiple RUN commands into one:
-        RUN apt-get update && apt-get install -y \
-            curl \
-            git \
-            && rm -rf /var/lib/apt/lists/*  
-
-    b) Use .dockerignore to exclude unnecessary files from being copied into the image.
-
-
-### Multi-Stage Builds
-
-- Multi-stage builds allow you to use multiple FROM statements in a single Dockerfile.
-- Each FROM statement starts a new build stage, and you can selectively copy files from one stage to another 
-- This helps reduce the final image size by discarding unnecessary build artifacts.
-
-
-=> How Multi-Stage Builds Work
-    Build Stage: 
-        This stage is used to compile or build your application. 
-        It typically includes all the tools and dependencies needed for building (e.g., compilers, SDKs).
-
-    Runtime Stage: 
-        This stage is used to run your application. 
-        It only includes the runtime dependencies (e.g., JRE, Node.js, Python) and the final build artifacts (e.g., compiled binaries, packaged files).
-
-=> Benefits of Multi-Stage Builds
-1. Smaller Final Image
-2. Improved Security
-3. Improved Security
-
-**Example of a Multi-Stage Dockerfile**
-
-    # Stage 1: Build the application
-    FROM golang:1.20 AS builder
-    WORKDIR /app
-    COPY . .
-    RUN go build -o myapp .
-
-    # Stage 2: Run the application
-    FROM alpine:latest
-    WORKDIR /app
-    # Copy only the compiled binary from the builder stage
-    COPY --from=builder /app/myapp .
-    # Set the command to run the application
-    CMD ["./myapp"]
-
-**Explanation of the Example**
-
-    Stage 1 (Builder):
-        Uses the golang:1.20 image, which includes the Go compiler and tools.
-        Copies the source code into the container.
-        Compiles the Go application into a binary named myapp.
-
-    Stage 2 (Runtime):
-        Uses a lightweight alpine image as the base for the final image.
-        Copies only the compiled binary (myapp) from the builder stage using COPY --from=builder.
-        Sets the command to run the binary when the container starts.
-
-
-**Example-2: Multi-Stage Dockerfile for a Python App***
-
-    # Stage 1: Build
-    FROM python:3.9-slim as builder
-
-    WORKDIR /app
-    COPY requirements.txt .
-    RUN pip install --user -r requirements.txt
-
-    # Stage 2: Final Image
-    FROM python:3.9-slim
-
-    WORKDIR /app
-    COPY --from=builder /root/.local /root/.local
-    COPY . .
-
-    # Ensure scripts in .local are usable
-    ENV PATH=/root/.local/bin:$PATH
-
-    EXPOSE 5000
-    CMD ["python", "app.py"]
-
-
-**Example-3**
-
-    # Stage 1: Build dependencies
-    FROM node:16 AS deps
-    WORKDIR /app
-    COPY package.json .
-    RUN npm install
-
-    # Stage 2: Build the application
-    FROM node:16 AS builder
-    WORKDIR /app
-    COPY . .
-    COPY --from=deps /app/node_modules ./node_modules
-    RUN npm run build
-
-    # Stage 3: Run the application
-    FROM node:16-alpine
-    WORKDIR /app
-    COPY --from=builder /app/dist ./dist
-    COPY --from=builder /app/node_modules ./node_modules
-    CMD ["node", "dist/index.js"]
-
-=> When to Use Multi-Stage Builds
-Compiled Languages: For languages like Go, Java, C++, etc., where you need a build environment but not the build tools in the final image.
-Complex Build Processes: When your build process involves multiple steps or tools that aren’t needed at runtime.
-Optimizing Image Size: When you want to minimize the size of your final Docker image.
-
-=> Key Takeaways
-    Multi-stage builds help you create smaller, more secure Docker images.
-    They are especially useful for compiled languages and complex build processes.
-    Use COPY --from to copy files between stages.
-
-
-## Docker Volumes and Networking
-
-### 1. Docker Volumes
-Why Use Volumes?
-    Containers are ephemeral (data is lost when the container stops).
-    Volumes provide persistent storage independent of the container lifecycle.
-    Useful for databases, application data, and shared storage.
-
-Volume Commands:
-    docker volume create <name>	Creates a new named volume
-    docker volume ls	Lists all volumes
-    docker volume inspect <name>	Shows volume details (mount point, driver)
-    docker volume rm <name>	Removes a volume
-    docker volume prune	Deletes all unused volumes
-
-=> Mounting a Volume in a Container
-    docker run -d --name mysql-db -v db_data:/var/lib/mysql mysql:latest
-    -v db_data:/var/lib/mysql binds the db_data volume to the container’s /var/lib/mysql.
-
-=> Bind Mounts vs. Volumes
-    Volumes:
-        - Managed by Docker 
-        - Portable 
-        - Optimized Performance
-        - Use Case: Databases, persistent storage. 
-
-    Blind Mounts:
-        - Not Managed by Docker, It is host-dependent
-        - Not Portable, It required host path
-        - Depends on host FS. 
-        - Use case: Development (live code reload)
-
-=> Using Bind Mounts
-    docker run -d --name web-app -v /host/path:/container/path nginx:latest
-
-Example (Development):
-    docker run -d --name dev-app -v $(pwd)/src:/app/src react-app
-
-
-### 3. Docker Networking
-
-Default Networks
-    Bridge (Default): Isolated network for containers on the same host.
-    Host: Bypasses Docker networking, uses host’s network directly.
-    None: No networking.
-
-Network Commands:
-    docker network ls	Lists all networks
-    docker network create <name>	Creates a custom network
-    docker network inspect <name>	Shows network details
-    docker network connect <network> <container>	Connects a container to a network
-    docker network disconnect <network> <container>	Disconnects a container
-
-=> Creating and Using a Custom Network
-
-    # Create a custom network
-    docker network create my-network
-
-    # Run containers on the same network
-    docker run -d --name web --network my-network nginx
-    docker run -d --name db --network my-network mysql
-
-    # Containers can communicate using their names as DNS
-    ping web  # Inside the 'db' container
 
 
