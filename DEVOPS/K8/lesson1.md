@@ -6,10 +6,12 @@
 Kubernetes (K8s) is an open-source container orchestration platform designed to automate deploying, scaling, and operating application containers across clusters of machines.
 
 🔹 Developed by Google, now maintained by CNCF (Cloud Native Computing Foundation).
+
 🔹 Enables containerized applications to run in different environments (on-premise, cloud, or hybrid).
+
 🔹 Supports self-healing, automatic scaling, load balancing, and declarative configurations.
 
-![Kubernetes Logo](https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg)
+![Kubernetes Logo](https://kubernetes.io/_common-resources/images/flower.svg)
 
 ---
 
@@ -68,7 +70,7 @@ Kubernetes (K8s) is an open-source container orchestration platform designed to 
 - **Kube Proxy**: Manages networking and load balancing.
 - **Container Runtime**: Runs the containers (e.g., Docker, containerd).
 
-![Kubernetes Architecture](https://miro.medium.com/max/1400/1*RqN8kx5MSXKwWBnt9jc-wg.png)
+![Kubernetes Architecture](https://kubernetes.io/images/docs/kubernetes-cluster-architecture.svg)
 
 ---
 
@@ -134,11 +136,13 @@ minikube service hello-k8s --url
 ---
 
 ## Main Observations 📌
+
 🔹 Kubernetes simplifies container orchestration.
 🔹 Requires learning curve for YAML configurations & CLI commands.
 🔹 Different distributions (Minikube, K3s, Kind) serve different use cases.
 
 ## Common Issues & Challenges ❗
+
 ⚠️ **Minikube startup issues** (e.g., virtualization not enabled, memory limits).
 ⚠️ **Networking problems** (firewall settings, port conflicts).
 ⚠️ **Permissions issues** (kubectl authentication failures).
