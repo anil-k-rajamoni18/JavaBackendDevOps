@@ -273,7 +273,7 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
 - Pull an image (e.g., `nginx`) and run it as a container.
 - Use `docker ps`, `docker images`, and `docker logs` to inspect your containers and images.
 
-![Docker Workflow](https://www.docker.com/wp-content/uploads/2023/03/docker-compose-diagram.png)
+![Docker Workflow](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*QzySxXC6-Kkvmq-F0tHkxA.jpeg)
 
 --- 
 
@@ -603,4 +603,660 @@ ping web  # Inside the 'db' container
 - Use **custom networks** for inter-container communication.
 
 
+--- 
+# 🚀 Docker Compose - Managing Multi-Container Applications
+
+---
+
+## 📖 1. What is Docker Compose? 🐳
+
+Docker Compose is a tool that simplifies the management of multi-container Docker applications. Instead of manually running `docker run` commands for each container, you can define all services in a single `docker-compose.yml` file and manage them collectively.
+
+### ✅ Key Features of Docker Compose:
+- **Declarative Configuration:** Define multiple containers in one YAML file.
+- **Simplified Management:** Start, stop, and manage services with single commands.
+- **Networking:** Automatically sets up a network for services to communicate.
+- **Environment Variables:** Easily configure services with `.env` files.
+- **Persistent Storage:** Attach volumes for data persistence.
+
+### 📄 Structure of `docker-compose.yml`
+```yaml
+version: '3.8'  # Specifies the Docker Compose version
+
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+  
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+```
+
+### 🔹 Explanation:
+- **`services:`** Defines the application components.
+- **`web:`** Runs an Nginx container and exposes port 8080.
+- **`db:`** Runs a MySQL container with environment variables.
+- **`depends_on:`** Ensures `db` starts before `web`.
+- **`volumes:`** Defines persistent storage for MySQL data.
+
+---
+
+## ⚙️ 2. Key Docker Compose Commands
+
+### 🚀 Starting & Stopping Services
+```sh
+# Start all services in the background
+docker-compose up -d
+
+# Stop and remove all containers, networks, and volumes
+docker-compose down
+```
+
+### 📜 Viewing Logs
+```sh
+# View logs of all running services
+docker-compose logs
+
+# View logs for a specific service
+docker-compose logs web
+```
+
+### 🔄 Restarting Services
+```sh
+# Restart a specific service
+docker-compose restart web
+```
+
+### 🏗️ Building Custom Images
+```sh
+# Build images for services defined in docker-compose.yml
+docker-compose build
+```
+
+### 🔍 Debugging Containers
+```sh
+# Open an interactive shell inside a running container
+docker-compose exec web sh
+```
+
+---
+
+## 🎯 3. Create a Multi-Container App (WordPress + MySQL)
+
+Let's deploy a WordPress application with MySQL as the database.
+
+### 📄 `docker-compose.yml`
+```yaml
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db
+  
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+```
+
+### 🚀 Deployment Steps:
+```sh
+# Step 1: Start the WordPress and MySQL services
+docker-compose up -d
+
+# Step 2: Open a browser and go to http://localhost:8080
+```
+
+🎉 Now you have a working WordPress website running with a MySQL database!
+
+---
+
+## 🔍 Main Observations
+- **Simplifies Multi-Container Apps:** Using a single YAML file, you can define and manage multiple services efficiently.
+- **Automatic Networking:** All services in a Compose file communicate on the same network without manual configuration.
+- **Data Persistence:** Volumes ensure database data is not lost when containers are restarted.
+- **Portability:** The same `docker-compose.yml` can be used across different environments.
+
+---
+
+## ⚠️ Common Issues & Challenges
+
+### 1️⃣ Containers Not Starting 🚨
+**Issue:** `docker-compose up` fails due to missing environment variables or dependency errors.
+🔹 **Solution:** Check logs using `docker-compose logs` and verify environment variable configurations.
+
+### 2️⃣ Database Connection Issues 🔗
+**Issue:** The web application fails to connect to the database.
+🔹 **Solution:**
+- Ensure the correct database hostname (`WORDPRESS_DB_HOST: db`).
+- Check if the MySQL service is running (`docker-compose ps`).
+
+### 3️⃣ Port Conflicts 🛑
+**Issue:** Port 8080 is already in use.
+🔹 **Solution:** Change the port mapping in `docker-compose.yml` (e.g., `9090:80`).
+
+### 4️⃣ File Permission Issues 📝
+**Issue:** Volume mounting errors due to file permission restrictions.
+🔹 **Solution:** Use `chmod` to adjust file permissions or run containers as a non-root user.
+
+### 5️⃣ Data Not Persisting 🔄
+**Issue:** Database resets after restarting the container.
+🔹 **Solution:** Ensure volumes are correctly defined and used.
+
+---
+
+## ✅ Summary
+- Docker Compose is essential for managing multi-container applications.
+- It simplifies deployment, networking, and data persistence.
+- Use `docker-compose up` and `docker-compose down` for easy container management.
+- Practice by deploying WordPress with MySQL.
+
+
+---
+# 🐳 Docker Registry and Image Management
+
+---
+
+## 1️⃣ Docker Hub 🌍
+
+Docker Hub is a cloud-based registry where Docker images can be stored and shared.
+
+### 🔹 Pushing and Pulling Images
+
+- **Pull an image from Docker Hub**  
+  ```sh
+  docker pull nginx:latest
+  ```
+- **Tag an image before pushing**  
+  ```sh
+  docker tag myapp:latest mydockerhubusername/myapp:v1.0
+  ```
+- **Push an image to Docker Hub**  
+  ```sh
+  docker push mydockerhubusername/myapp:v1.0
+  ```
+- **List locally stored images**  
+  ```sh
+  docker images
+  ```
+
+### 🔹 Authenticating with Docker Hub
+Before pushing, ensure you are logged in:
+```sh
+docker login
+```
+It will prompt for your Docker Hub credentials.
+
+---
+
+## 2️⃣ Private Docker Registries 🔒
+
+A private registry allows storing images securely within an organization.
+
+### 🔹 Setting Up a Private Docker Registry
+- **Run a local registry container**  
+  ```sh
+  docker run -d -p 5000:5000 --name registry registry:2
+  ```
+- **Tag and push an image to the local registry**  
+  ```sh
+  docker tag myapp localhost:5000/myapp:v1.0
+  docker push localhost:5000/myapp:v1.0
+  ```
+- **Pull an image from the local registry**  
+  ```sh
+  docker pull localhost:5000/myapp:v1.0
+  ```
+- **List images in the registry**  
+  ```sh
+  curl http://localhost:5000/v2/_catalog
+  ```
+
+---
+
+## 3️⃣ Image Optimization 📏
+
+Optimizing images reduces size and improves efficiency.
+
+### 🔹 Multi-Stage Builds 🏗️
+- Use multi-stage builds to remove unnecessary files in the final image.
+- Example for a **Golang application**:
+  ```dockerfile
+  # Stage 1: Build stage
+  FROM golang:1.20 AS builder
+  WORKDIR /app
+  COPY . .
+  RUN go build -o myapp
+
+  # Stage 2: Minimal runtime image
+  FROM alpine:latest
+  WORKDIR /app
+  COPY --from=builder /app/myapp .
+  CMD ["./myapp"]
+  ```
+
+### 🔹 Using `.dockerignore` 🚫
+
+Exclude unnecessary files when building an image:
+```txt
+node_modules/
+*.log
+.git
+.env
+```
+
+Add this `.dockerignore` file in the project root to prevent copying unwanted files into the image.
+
+---
+
+## 🔥 Practice 🛠️
+
+### ✅ Push a Custom Image to Docker Hub
+1. Build a Docker image:
+   ```sh
+   docker build -t myapp .
+   ```
+2. Tag it:
+   ```sh
+   docker tag myapp mydockerhubusername/myapp:v1.0
+   ```
+3. Push it to Docker Hub:
+   ```sh
+   docker push mydockerhubusername/myapp:v1.0
+   ```
+
+### ✅ Optimize an Image Using Multi-Stage Builds
+1. Modify the Dockerfile to use multi-stage builds.
+2. Rebuild the image:
+   ```sh
+   docker build -t optimized-app .
+   ```
+3. Compare sizes:
+   ```sh
+   docker images
+   ```
+
+---
+
+## 🔍 Main Observations 📌
+- Docker Hub is the default registry but private registries offer better control.
+- Multi-stage builds significantly reduce image size.
+- `.dockerignore` prevents unwanted files from being added to the image.
+- Authentication is required before pushing images to Docker Hub.
+
+---
+
+## ⚠️ Common Issues & Challenges 🛑
+
+### ❌ "Denied: requested access to the resource is denied"
+🔹 Ensure you are logged in:  
+```sh
+docker login
+```
+🔹 Verify you have permission to push images.
+
+### ❌ "Image is too large"
+🔹 Use multi-stage builds.
+🔹 Use smaller base images (e.g., `alpine`, `distroless`).
+
+### ❌ "Cannot connect to the Docker daemon"
+🔹 Ensure Docker is running.
+🔹 Try running with `sudo` if using Linux.
+
+### ❌ "Connection refused when pushing to a private registry"
+🔹 Ensure the registry is running and accessible.
+🔹 If using an insecure registry, configure Docker to allow it:
+  ```json
+  { "insecure-registries": ["localhost:5000"] }
+  ```
+
+---
+
+# 🐳 Advanced Docker Concepts
+
+---
+
+## 1️⃣ Docker Swarm: Native Container Orchestration
+
+## 1️⃣ Docker Swarm: Native Container Orchestration 🚢
+
+### 🔹 What is Docker Swarm?
+Docker Swarm is Docker's built-in container orchestration tool that allows managing multiple containers across multiple hosts.
+
+### 🔹 Key Features of Docker Swarm
+- **Cluster Management**: Swarm turns multiple Docker hosts into a single virtual system.
+- **Scaling**: Easily scale services up or down using `docker service scale`.
+- **Load Balancing**: Built-in load balancer distributes traffic across containers.
+- **Rolling Updates**: Update services with minimal downtime.
+- **Fault Tolerance**: Ensures high availability by redistributing workloads.
+
+
+### 🔹 Swarm Commands
+```bash
+# Initialize a Swarm cluster
+$ docker swarm init
+
+# Add worker nodes to the Swarm
+$ docker swarm join --token <token> <manager-ip>:2377
+
+# Deploy a service in Swarm
+$ docker service create --name web -p 80:80 nginx
+
+# Scale a service
+$ docker service scale web=5
+
+# List services
+$ docker service ls
+
+# Remove a Swarm cluster
+$ docker swarm leave --force
+```
+---
+
+
+## 2️⃣ Docker Swarm vs Kubernetes 🤔
+
+| Feature              | Docker Swarm | Kubernetes |
+|----------------------|--------------|------------|
+| Ease of Setup       | ✅ Simple | ❌ Complex |
+| Scaling            | ✅ Quick scaling | ✅ Advanced scaling |
+| Load Balancing     | ✅ Built-in | ✅ External LB required |
+| Rolling Updates    | ✅ Yes | ✅ Yes |
+| Auto-healing       | ❌ Limited | ✅ Yes |
+| Networking         | ✅ Simple | ✅ Complex but powerful |
+| Community Support  | ✅ Smaller | ✅ Large & active |
+| Industry Adoption  | 🚀 Medium | 🌍 Widely adopted |
+
+**➡️ When to use Docker Swarm?**
+- Small to medium-scale applications.
+- Simple orchestration without complex configurations.
+- Faster deployment and learning curve.
+
+**➡️ When to use Kubernetes?**
+- Large-scale, enterprise-grade applications.
+- Advanced networking and auto-healing required.
+- Need robust monitoring, logging, and integrations.
+
+---
+
+## 2️⃣ Docker Security 🔒
+
+**Best Practices for Securing Containers:**
+- Use **official** and **trusted images**.
+- Apply **least privilege principle** (limit root access inside containers), **Run Containers as Non-Root Users**.
+- Regularly **scan images for vulnerabilities**.
+- Use **Docker Content Trust (DCT)** for image verification.
+- Apply **resource limits** to prevent misuse.
+
+**Vulnerability Scanning with `docker scan`:**
+```sh
+# Scan a Docker image for security vulnerabilities
+docker scan nginx
+```
+
+**Enabling Docker Content Trust (DCT):**
+```sh
+# Enable DCT before pulling/pushing images
+export DOCKER_CONTENT_TRUST=1
+```
+
+---
+
+## 3️⃣ Resource Management ⚙️
+
+**Why Manage Resources?**
+- Prevents excessive CPU and memory usage by containers.
+- Ensures fair resource allocation in multi-container environments.
+- Avoids performance degradation on the host system.
+
+**Limiting CPU & Memory Usage:**
+```sh
+# Limit a container to use only 512MB of memory and 50% of a CPU core
+docker run -d --memory=512m --cpus=0.5 nginx
+```
+
+**Monitor Resource Usage:**
+```sh
+# Real-time container resource usage
+docker stats
+```
+
+---
+
+## 4️⃣ Troubleshooting Common Docker Issues 🛠️
+
+**1️⃣ Container Won’t Start 🚫**
+- Check logs: `docker logs <container>`
+- Verify image existence: `docker images`
+- Run interactively to debug: `docker run -it --rm <image> /bin/sh`
+
+**2️⃣ Port Binding Issues 🌐**
+- Ensure port is mapped correctly: `docker ps -a`
+- Check if port is in use: `netstat -tulnp | grep <port>`
+- Restart Docker daemon: `systemctl restart docker`
+
+**3️⃣ Network Connectivity Issues 🔗**
+- Inspect container network: `docker network inspect <network>`
+- Check connectivity: `docker exec -it <container> ping <target>`
+- Restart container network: `docker network rm <network> && docker network create <network>`
+
+**4️⃣ High Resource Consumption 📈**
+- Use `docker stats` to identify resource-heavy containers.
+- Limit resources using `--memory` and `--cpus` options.
+- Optimize Dockerfile to reduce unnecessary overhead.
+
+---
+
+## 🛠️ Practice Tasks
+✅ Deploy a service in Docker Swarm.
+✅ Apply CPU and memory resource limits to a running container.
+✅ Scan an image for vulnerabilities using `docker scan`.
+✅ Troubleshoot a failing container and fix the issue.
+
+---
+
+## 📌 Main Observations
+✔️ Docker Swarm simplifies multi-node orchestration but has limitations compared to Kubernetes.
+✔️ Security is critical; always use trusted images and scan for vulnerabilities.
+✔️ Managing resources helps improve performance and avoid container overuse.
+✔️ Troubleshooting is easier with `docker logs`, `docker stats`, and `docker network inspect`.
+
+---
+
+## ⚠️ Common Issues & Challenges
+❌ **Docker Swarm Scaling Issues:** Swarm works well for small clusters but lacks advanced features of Kubernetes.
+
+❌ **Security Misconfigurations:** Running containers as root or not scanning for vulnerabilities can lead 
+to breaches.
+
+❌ **Resource Starvation:** Poorly managed containers can hog CPU and memory, affecting host performance.
+
+❌ **Network Failures:** Misconfigured networks or overlapping subnets can cause connectivity problems.
+
+
+
+--- 
+# Real-World Projects and Best Practices with Docker 🚀
+
+## 🏗️ **Project 1: CI/CD Pipeline with Docker**
+
+### 🔹 **What is CI/CD?**
+Continuous Integration and Continuous Deployment (CI/CD) is a DevOps practice that automates the building, testing, and deployment of applications.
+
+### 🔹 **Why Use Docker in CI/CD?**
+- Ensures consistency across different environments.
+- Speeds up builds by caching dependencies.
+- Simplifies deployment and rollback processes.
+
+### 🔹 **Steps to Integrate Docker into a CI/CD Pipeline**
+
+1. **Build a Docker Image** 📦
+   ```sh
+   docker build -t myapp:latest .
+   ```
+
+2. **Push Image to Docker Hub / Private Registry** ☁️
+   ```sh
+   docker tag myapp:latest myrepo/myapp:latest
+   docker push myrepo/myapp:latest
+   ```
+
+3. **Deploy Container on Server** 🚀
+   ```sh
+   docker run -d -p 80:80 myrepo/myapp:latest
+   ```
+
+### 🔹 **Example: CI/CD with GitHub Actions** 🛠️
+```yaml
+name: Docker CI/CD Pipeline
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: docker build -t myapp:latest .
+      - name: Push to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker tag myapp:latest myrepo/myapp:latest
+          docker push myrepo/myapp:latest
+      - name: Deploy Container
+        run: ssh user@server 'docker pull myrepo/myapp:latest && docker run -d -p 80:80 myrepo/myapp:latest'
+```
+
+---
+
+## 🏗️ **Project 2: Microservices with Docker**
+
+### 🔹 **What are Microservices?**
+Microservices architecture structures an application as a collection of small, loosely coupled services that communicate over a network.
+
+### 🔹 **Why Use Docker for Microservices?**
+- Isolates each microservice in a separate container.
+- Simplifies scaling and deployment.
+- Allows each service to use different tech stacks.
+
+### 🔹 **Example: Deploying Microservices with Docker Compose** 📝
+**docker-compose.yml**
+```yaml
+version: '3.8'
+services:
+  web:
+    image: myapp-web
+    build: ./web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:
+```
+
+### 🔹 **Deploying the Application**
+```sh
+docker-compose up -d
+```
+
+---
+
+## 🏆 **Best Practices for Docker in Production**
+
+### ✅ **Use Official Base Images**
+- Prefer lightweight images (e.g., `alpine` versions) to reduce attack surface.
+- Keep dependencies up to date.
+
+### ✅ **Keep Containers Lightweight**
+- Use multi-stage builds to minimize image size.
+- Remove unnecessary files using `.dockerignore`.
+
+### ✅ **Follow the Principle of One Process per Container**
+- Each container should run a single service (e.g., database, web server, API).
+
+### ✅ **Use Environment Variables for Configuration**
+- Avoid hardcoding secrets inside images.
+- Use `.env` files for sensitive configurations.
+
+### ✅ **Implement Logging and Monitoring**
+- Use `docker logs <container>` for debugging.
+- Implement centralized logging (e.g., ELK Stack, Prometheus, Grafana).
+
+---
+
+## 🔍 **Main Observations**
+- Docker significantly simplifies deployment and environment consistency.
+- Using Docker in CI/CD automates builds, testing, and deployments.
+- Microservices architecture benefits greatly from containerization.
+- Security and resource management should be considered in production.
+
+---
+
+## ⚠️ **Common Issues & Challenges**
+
+### ❌ **Image Size is Too Large**
+✅ Use multi-stage builds and minimize layers.
+
+### ❌ **Containers Restarting Frequently**
+✅ Check logs using `docker logs <container>` to find the issue.
+✅ Ensure ports and environment variables are correctly set.
+
+### ❌ **Networking Issues Between Containers**
+✅ Ensure containers are on the same Docker network.
+✅ Use `docker network inspect <network>` to debug.
+
+### ❌ **Security Risks in Images**
+✅ Scan images using `docker scan <image>`.
+✅ Use official, trusted base images.
+
+---
+
+### 🏁 **Practice: Build and Deploy a Real-World Application Using Docker**
+
+1. Create a simple web app (e.g., Flask, Express, or Spring Boot).
+2. Dockerize the application using a `Dockerfile`.
+3. Set up CI/CD to build and deploy the image.
+4. Deploy a microservices-based application using Docker Compose.
+5. Optimize image size and apply best practices.
 
