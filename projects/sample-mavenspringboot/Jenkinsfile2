@@ -6,26 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-                script {
-                    // Determine deployment environment based on branch
-                    if (env.BRANCH_NAME.startsWith('feature/')) {
-                        env.DEPLOY_ENV = 'development'
-                    } else if (env.BRANCH_NAME.startsWith('integration/')) {
-                        env.DEPLOY_ENV = 'test'
-                    } else if (env.BRANCH_NAME.startsWith('release/')) {
-                        env.DEPLOY_ENV = 'stage'
-                    } else if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main') {
-                        env.DEPLOY_ENV = 'production'
-                    } else {
-                        env.DEPLOY_ENV = 'unknown'
-                    }
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 dir('projects/sample-mavenspringboot') {
@@ -44,6 +24,24 @@ pipeline {
                 always {
                     junit '**/target/surefire-reports/*.xml'
                     archiveArtifacts artifacts: '**/target/surefire-reports/*.xml', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Set Deploy Environment') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME.startsWith('feature/')) {
+                        env.DEPLOY_ENV = 'development'
+                    } else if (env.BRANCH_NAME.startsWith('integration/')) {
+                        env.DEPLOY_ENV = 'test'
+                    } else if (env.BRANCH_NAME.startsWith('release/')) {
+                        env.DEPLOY_ENV = 'stage'
+                    } else if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main') {
+                        env.DEPLOY_ENV = 'production'
+                    } else {
+                        env.DEPLOY_ENV = 'unknown'
+                    }
                 }
             }
         }
