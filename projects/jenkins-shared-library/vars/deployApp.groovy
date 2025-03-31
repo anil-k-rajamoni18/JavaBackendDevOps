@@ -1,9 +1,7 @@
 def call(String env) {
-    stages {
-        stage('Deploy') {
-            steps {
-                echo "Deploying to ${env}"
-            }
+    stage('Deploy') {
+        steps {
+            echo "Deploying to ${env}"
         }
     }
 }
