@@ -1261,6 +1261,47 @@ pipeline {
         }
     }
 
+## Multi-Branch Pipeline in Jenkins
+- A multi-branch pipeline in Jenkins automatically creates and manages pipelines for different branches in a source control repository (e.g., GitHub, GitLab, Bitbucket). 
+- This setup is useful for projects where multiple branches exist, such as dev, staging, and main, ensuring each branch is tested and deployed separately.
+
+Prerequisites
+    Jenkins installed and running.
+    Git installed on the Jenkins server.
+    Jenkins plugins installed:
+        Pipeline
+        Git
+        Multibranch Pipeline
+    Access to a Git repository with multiple branches.
+
+Steps:
+
+1. Create a Jenkins Multi-Branch Pipeline Job
+
+    Open Jenkins and navigate to New Item.
+    Enter a name (e.g., My-Multibranch-Pipeline).
+    Select Multibranch Pipeline and click OK.
+        Configure the job:
+        Under Branch Sources, click Add source → Git.
+        Enter the repository URL.
+        Add credentials if required.
+        Set the branch discovery strategy (e.g., all branches, named branches, wildcards).
+    Click Save.
+2. Create a Jenkinsfile in Your Repository
+3. Trigger the Multi-Branch Pipeline
+    When a new branch is pushed, Jenkins automatically detects and creates a pipeline for it.
+    Each branch runs independently based on the Jenkinsfile.
+
+### Use Case:
+A development team maintains three branches:
+    dev → For development
+    staging → For testing
+    main → For production
+
+Each branch follows a different build and deployment process:
+    dev branch runs unit tests.
+    staging branch deploys to a test environment.
+    main branch triggers a production deployment.
 
 ## Jenkins Plugins and Integrations
 

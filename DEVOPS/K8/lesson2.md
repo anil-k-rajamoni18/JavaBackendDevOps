@@ -2,10 +2,9 @@
 
 ## Core Kubernetes Objects & Deployments
 
----
-
 ## Syntax/Structure of YAML File 📄
-YAML (Yet Another Markup Language) is used for Kubernetes configurations. It follows indentation-based syntax.
+- YAML (Yet Another Markup Language) is used for Kubernetes configurations. 
+- It follows indentation-based syntax.
 
 ### Basic YAML Structure:
 ```yaml
@@ -36,8 +35,11 @@ spec:            # Specifications of the object
 A **Pod** is the smallest and simplest unit in Kubernetes, representing a single instance of a running process in a cluster.
 
 🔹 Can contain **one or more containers**.
+
 🔹 Shares **network and storage** resources.
+
 🔹 Communicates via **localhost** within the Pod.
+
 🔹 Managed by **ReplicaSets, Deployments, and StatefulSets**.
 
 ### Pod Example (YAML Configuration)
@@ -69,6 +71,7 @@ kubectl apply -f pod.yaml
 A **ReplicaSet (RS)** ensures that a specified number of Pod replicas are running at any time.
 
 🔹 Used for **high availability & fault tolerance**.
+
 🔹 Automatically replaces failed pods.
 
 ### ReplicaSet Example
@@ -109,7 +112,9 @@ kubectl scale --replicas=5 rs/my-replicaset
 A **Deployment** manages ReplicaSets and provides declarative updates to applications.
 
 🔹 Enables **rolling updates** without downtime.
+
 🔹 Supports **rollbacks** in case of failure.
+
 🔹 Ensures controlled deployment of new versions.
 
 ### Deployment Example
@@ -156,6 +161,7 @@ kubectl rollout undo deployment/my-deployment
 **Namespaces** allow separation of Kubernetes resources within the same cluster.
 
 🔹 Useful for **multi-tenancy** (e.g., dev, staging, production).
+
 🔹 Prevents conflicts by organizing resources.
 
 ### List Existing Namespaces
@@ -194,6 +200,7 @@ kubectl delete namespace dev-environment
 Labels are key-value pairs used to **organize and filter** Kubernetes objects.
 
 🔹 Used by **Selectors** to target specific resources.
+
 🔹 Helps in **grouping related objects** (e.g., all frontend pods).
 
 ### Label Example
@@ -217,6 +224,7 @@ kubectl get pods -l app=frontend
 Applications that **maintain state/data** across Pod restarts (e.g., Databases, Message Queues).
 
 🔹 Managed using **StatefulSets** instead of Deployments.
+
 🔹 Ensures **stable network identity & persistent storage**.
 
 ### StatefulSet Example
