@@ -1,11 +1,16 @@
+@Library('my-shared-library') _
 pipeline {
     agent any
+    parameters {
+        string(name: 'VERSION', defaultValue: '1.0', description: 'Version to Build&Deploy')
+    }
 
     stages {
         stage('Build') {
             steps {
                 dir('projects/sample-mavenspringboot') {
-                    sh './mvnw clean install'
+                    //sh './mvnw clean install'
+                    buildApp(${params.VERSION})
                 }
             }
         }
@@ -13,7 +18,8 @@ pipeline {
         stage('Test') {
             steps {
                 dir('projects/sample-mavenspringboot') {
-                    sh './mvnw test'
+                    //sh './mvnw test'
+                    testApp()
                 }
             }
             post {
@@ -46,13 +52,8 @@ pipeline {
             steps {
                 script {
                     echo "Branch name: ${env.BRANCH_NAME}"
-                    echo "Deploying to ${env.DEPLOY_ENV}"
-                    
-                    // You can add actual deployment commands here based on DEPLOY_ENV
-                    // For example:
-                    // if (env.DEPLOY_ENV == 'production') {
-                    //     sh 'mvn deploy'
-                    // }
+                    //echo "Deploying to ${env.DEPLOY_ENV}"
+                    deployApp(${env.DEPLOY_ENV})
                 }
             }
         }
