@@ -1170,9 +1170,15 @@ Example:
     }
 
 7. Shared Libraries
-
 - Creating Reusable Pipeline Code
 - Shared libraries allow you to reuse code across multiple pipelines.
+
+Why Use Shared Libraries?
+    Code Reusability: Avoid duplication across multiple pipelines.
+    Maintainability: Centralized updates to pipeline logic.
+    Standardization: Enforce best practices across all jobs.
+    Modularity: Define reusable functions for different stages (build, test, deploy, etc.).
+
 - Create a shared library repository with a structure like:
     vars/
         buildApp.groovy
@@ -1184,6 +1190,16 @@ Example:
         echo "Building application version ${version}"
         sh "mvn clean install -Dversion=${version}"
     }
+
+- Configure Jenkins to Use the Shared Library
+    Go to Jenkins Dashboard → Manage Jenkins → Configure System.
+    Scroll to 'Global Pipeline Libraries'.
+    Add a new library:
+    Name: my-shared-library
+    Default version: main (or specific branch/tag)
+    Retrieval method: Git
+    Repository URL: https://github.com/example/jenkins-shared-library.git
+    Check Load implicitly if you want it automatically loaded in all pipel
 
 - Use the shared library in a pipeline:
 
