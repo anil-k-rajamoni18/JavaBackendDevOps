@@ -37,9 +37,7 @@ pipeline {
                         env.DEPLOY_ENV = 'production'
                     } else {
                         env.DEPLOY_ENV = 'unknown'
-                    }
-                    echo "BRANCH_NAME: ${env.BRANCH_NAME}" 
-                    echo "DEPLOY_ENV:  ${env.DEPLOY_ENV}" 
+                    } 
                 }
             }
         }
