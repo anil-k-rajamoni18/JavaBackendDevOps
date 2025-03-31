@@ -10,7 +10,7 @@ pipeline {
             steps {
                 dir('projects/sample-mavenspringboot') {
                     //sh './mvnw clean install'
-                    buildApp(${params.VERSION})
+                    buildApp("${params.VERSION}")
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline {
                 script {
                     echo "Branch name: ${env.BRANCH_NAME}"
                     //echo "Deploying to ${env.DEPLOY_ENV}"
-                    deployApp(${env.DEPLOY_ENV})
+                    deployApp("${env.DEPLOY_ENV}")
                 }
             }
         }
