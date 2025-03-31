@@ -1,12 +1,4 @@
 def call() {
-    stage('Test') {
-        steps {
-            sh './mvnw test'
-        }
-        post {
-            always {
-                junit 'projects/sample-mavenspringboot/target/surefire-reports/*.xml'
-            }
-        }
-    }
+    echo "Testing application"
+    sh './mvnw test'
 }
