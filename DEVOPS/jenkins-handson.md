@@ -1127,6 +1127,9 @@ Example:
         failure {
             echo 'Pipeline failed!'
         }
+        always {
+            cleanWs()
+        }
     }
 
 5. Using Environment Variables
@@ -1139,7 +1142,7 @@ Example:
         stages {
             stage('Build') {
                 steps {
-                    echo "Building version ${APP_VERSION}, build number ${BUILD_NUMBER}"
+                    echo "Building version ${env.APP_VERSION}, build number ${BUILD_NUMBER}"
                 }
             }
         }
@@ -1182,6 +1185,7 @@ Why Use Shared Libraries?
 - Create a shared library repository with a structure like:
     vars/
         buildApp.groovy
+        testApp.groovy
         deployApp.groovy
 
 - Example of a shared library method (buildApp.groovy):

@@ -1,3 +1,4 @@
+@Library('my-shared-library') _
 pipeline {
     agent any
     parameters {
@@ -8,8 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 dir('projects/sample-mavenspringboot') {
-                    sh './mvnw clean install'
-                    //buildApp("${params.VERSION}")
+                    //sh './mvnw clean install'
+                    buildApp("${params.VERSION}")
                 }
             }
         }
@@ -17,8 +18,8 @@ pipeline {
         stage('Test') {
             steps {
                 dir('projects/sample-mavenspringboot') {
-                    sh './mvnw test'
-                    //testApp()
+                    //sh './mvnw test'
+                    testApp()
                 }
             }
             post {
@@ -51,8 +52,8 @@ pipeline {
             steps {
                 script {
                     echo "Branch name: ${env.BRANCH_NAME}"
-                    echo "Deploying to ${env.DEPLOY_ENV}"
-                    //deployApp("${env.DEPLOY_ENV}")
+                    //echo "Deploying to ${env.DEPLOY_ENV}"
+                    deployApp("${env.DEPLOY_ENV}")
                 }
             }
         }
