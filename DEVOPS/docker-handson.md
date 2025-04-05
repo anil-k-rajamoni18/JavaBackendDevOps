@@ -389,7 +389,7 @@ docker build -t my-app .
 🔹 **Run the container:**
 ```sh
 docker run -p 5000:5000 my-app  # Adjust ports as needed
-
+```
 --- 
 
 
@@ -585,6 +585,7 @@ docker network disconnect <network> <container> # Disconnects a container
 ```
 
 ### Creating and Using a Custom Network 🔗
+
 ```sh
 # Create a custom network
 docker network create my-network

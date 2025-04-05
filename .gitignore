@@ -1,0 +1,30 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+.env
+
+# React
+build
+*.log
+.cache
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+logs
+*.log
+
+# Coverage
+coverage
+
+
+# Misc
+*.local
+*.swp
