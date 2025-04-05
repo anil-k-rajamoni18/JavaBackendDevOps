@@ -75,8 +75,11 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
 ## 🚀 Benefits of Docker
 
 ✅ **Portability** – Run the same container across **dev, test, and prod** environments.
+
 ✅ **Scalability** – Easily **scale up/down** by running multiple containers.
+
 ✅ **Isolation** – Each container runs in its **own isolated** environment.
+
 ✅ **Efficiency** – Containers share the **host OS kernel**, making them **lightweight and fast**.
 
 
@@ -150,6 +153,7 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
   sudo apt-get install docker.io
   sudo systemctl start docker
   sudo systemctl enable docker
+  sudo usermod -aG docker ubuntu $USER
   ```
 
 ## ✅ Verify Installation:
@@ -157,16 +161,50 @@ More details: [Docker Official Website](https://www.docker.com/) 🌐
 
   ```bash
   docker --version
-  
-
 --- 
 
+
+# 🧹 How to Completely Uninstall Docker
+
+## 🐧 Ubuntu/Linux (Debian-based)
+
+### 1. Stop Docker Services
+```bash
+sudo systemctl stop docker
+sudo systemctl stop docker.socket
+```
+
+### 2. Uninstall Docker Packages
+```bash
+sudo apt-get purge docker-ce -y (for Docker Community Edition).
+sudo apt-get autoremove --purge docker-ce -y (removes any remaining Docker packages and their dependencies).
+```
+
+### 3. Remove Docker Data
+```bash
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+```
+
+### 4. Remove Config Files (Optional)
+```bash
+sudo rm -rf /etc/docker
+sudo rm -rf ~/.docker
+sudo rm -f /var/run/docker.sock
+```
+
+### 5. Cleanup System
+```bash
+sudo apt-get autoremove -y
+sudo apt-get autoclean
+```
 
 # 🚀 Basic Docker Commands
 
 ## 🏗️ Container Management
 
 - `docker run <image>`: Run a container from an image.
+- `docker run -d --name <container-name> -p hostPort:containerPort <image>`: Run a container from an image on specific port in background
 - `docker start <container>`: Start a stopped container.
 - `docker stop <container>`: Stop a running container.
 - `docker restart <container>`: Restart a container.
