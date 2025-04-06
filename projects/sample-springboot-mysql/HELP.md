@@ -131,3 +131,42 @@ docker run -d --name car-rental \
 
 🚀 **Now your MySQL setup is fully persistent and ready for use!**
 
+---
+
+### ❌ Reason: localhost inside Docker refers to the container itself, not your machine or another container
+
+When you run:
+```yml
+spring.datasource.url: jdbc:mysql://localhost:3306/car_rental_db
+```
+
+- From inside the Spring Boot container, localhost means "this Spring Boot container itself", not your MySQL container.
+
+- But the MySQL server is running in another container, so naturally, there’s nothing listening on localhost:3306 in the Spring Boot container → hence connection failure.
+
+### ✅ The Fix: Use container-to-container networking
+
+- Docker provides an internal DNS that lets containers in the same network talk to each other by name. For example:
+```bash
+docker network create car-rental-network
+
+docker run --name mysql-db --network car-rental-network -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=car_rental_db -p 3306:3306 -d mysql:8
+
+docker run --name springboot-api --network car-rental-network -p 8081:8081 your-springboot-image
+```
+```yml
+spring.datasource.url: jdbc:mysql://mysql-db:3306/car_rental_db
+```
+
+- Here, mysql-db is the container name of your MySQL container. Docker resolves that name to the correct internal IP of the MySQL container — just like using a hostname.
+
+
+### ✅ Alternative (for dev only): Use host.docker.internal
+
+If you want to connect to a MySQL instance running on your host machine (WSL/Windows), change the URL to:
+
+```yml
+spring:
+  datasource:
+    url: jdbc:mysql://host.docker.internal:3306/car_rental_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+```
