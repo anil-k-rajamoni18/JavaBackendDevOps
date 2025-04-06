@@ -51,3 +51,57 @@ export default defineConfig({
 });
 
 ```
+
+
+❌ Error:
+```pgsql
+Blocked request. This host ("ec2-xx-xxx-xxx-xxx.region.compute.amazonaws.com") is not allowed.
+To allow this host, add "ec2-xx-xxx-xxx-xxx.region.compute.amazonaws.com" to `preview.allowedHosts` in vite.config.js.
+```
+🧠 What It Means:
+
+You're probably trying to preview or access a Vite app that's hosted on an Amazon EC2 server with the hostname:
+
+Vite's preview server, by default, restricts which hosts can access it for security reasons (to prevent unauthorized or unexpected domains from connecting).
+
+Since your EC2 hostname isn't in the list of allowed hosts, Vite is blocking the request.
+
+
+🛠️ Why This Happens:
+
+When you run:
+```bash
+npm run preview
+```
+-  Vite serves the built production files with a simple web server. This is not the same as npm run dev, which is for development only.
+
+
+✅ How to Fix It:
+Update your vite.config.js like this:
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    preview: {
+      allowedHosts: ['ec2-xx-xxx-xxx-xxx.region.compute.amazonaws.com']
+    }
+  }
+})
+
+```
+
+To allow all host 
+```js
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    preview: {
+      allowedHosts: ['*'] // 🚨 Allows ALL hosts
+    }
+  }
+})
+```
