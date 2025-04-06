@@ -212,7 +212,12 @@ sudo apt-get autoclean
 - `docker ps`: List running containers.
 - `docker ps -a`: List all containers (running and stopped).
 - `docker logs <container>`: View logs of a container.
-- `docker exec -it <container> <command>`: Run a command inside a running container (e.g., `docker exec -it mycontainer bash`).
+- `docker exec -it <container> <command>`: Run a command inside a running container 
+    -i (interactive): Keeps STDIN open so you can interact with the container.
+    -t (tty): Allocates a pseudo-terminal (like a shell).
+- `docker exec -it <container_name> sh` : sh is available in Alpine-based images.
+- `docker exec -it <container_name> bash` : bash is available in Debian/Ubuntu-based images.
+- `docker exec -it webserver ls /app` : Run commands inside container
 
 ## 🖼️ Image Management
 
@@ -607,11 +612,74 @@ docker run -d --name dev-app -v $(pwd)/src:/app/src react-app
 ---
 
 ## 2. Docker Networking 🌍
+- Docker networking allows containers to communicate with each other and with the external world. 
+- It is a key part of building containerized applications that involve multiple services like databases, APIs, and frontends.
 
-### Default Networks
-- **Bridge (Default):** Isolated network for containers on the same host.
-- **Host:** Bypasses Docker networking, uses host’s network directly.
-- **None:** No networking.
+
+### 📦 Types of Docker Networks
+
+Docker provides several built-in network drivers:
+
+#### 1. **Bridge (default)**
+- **Used for containers on the same host.**
+- Each container gets its own IP address.
+- Ideal for standalone applications or those that communicate with other containers via internal networking.
+```bash
+docker network create my-bridge-net
+docker run --network my-bridge-net
+```
+
+#### 2. Host
+- Shares the host's network stack (no isolation).
+- No separate IP; the container uses the host's IP.
+- Useful for high-performance or low-latency applications.
+```bash
+docker run --network host ...
+```
+#### 3. None
+- Disables all networking for a container.
+- Isolated container with no external access.
+
+```bash
+docker run --network none ...
+```
+
+#### 4. Overlay
+- For multi-host communication (used with Docker Swarm or Kubernetes).
+- Enables containers across different physical hosts to communicate securely.
+```bash
+docker network create --driver overlay my-overlay-net
+```
+
+### 🧩 Custom User-Defined Bridge Network
+User-defined bridge networks are preferred over the default bridge because:
+  - Containers can reference each other by name.
+  - DNS-based service discovery is enabled.
+  - Better network isolation and management.
+
+**Example:**
+```dockerfile
+services:
+  db:
+    container_name: mydb
+    networks:
+      - my-network
+
+  api:
+    container_name: myapi
+    depends_on:
+      - db
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+```
+
+#### On the Same Network:
+- Use container name as hostname.
+- No need to expose ports unless accessing from outside.
 
 ### Network Commands ⚡
 ```sh
