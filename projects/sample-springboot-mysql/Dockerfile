@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN . /app 
 
-RUN ./gradlew clean build 
+RUN ./app/gradlew clean build 
 
 COPY build/libs/*.jar app.jar
 
