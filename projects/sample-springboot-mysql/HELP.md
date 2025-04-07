@@ -15,8 +15,8 @@ docker network create my-network
 
 ### 2️⃣ Start the MySQL Container
 ```sh
-docker run -d --name car-rental \
-  --network my-network \
+docker run -d --name mysql-db \
+  --network car-network \
   -e MYSQL_ROOT_PASSWORD=root123 \
   -e MYSQL_DATABASE=car_rental_db \
   -p 3306:3306 \
@@ -64,8 +64,8 @@ A **bind mount** maps a directory from your host machine to the container.
 
 ### 📌 Run MySQL with a Bind Mount
 ```sh
-docker run -d --name car-rental \
-  --network my-network \
+docker run -d --name mysql-db \
+  --network car-network \
   -e MYSQL_ROOT_PASSWORD=root123 \
   -e MYSQL_DATABASE=car_rental_db \
   -p 3306:3306 \
@@ -94,8 +94,8 @@ Docker **volumes** are managed by Docker and are the best way to persist databas
 ```sh
 docker volume create mysql-data
 
-docker run -d --name car-rental \
-  --network my-network \
+docker run -d --name mysql-db \
+  --network car-network \
   -e MYSQL_ROOT_PASSWORD=root123 \
   -e MYSQL_DATABASE=car_rental_db \
   -p 3306:3306 \
@@ -112,8 +112,8 @@ docker run -d --name car-rental \
    ```
 2. **Start a new MySQL container with the same volume:**
    ```sh
-   docker run -d --name car-rental \
-     --network my-network \
+   docker run -d --name mysql-db \
+     --network car-network \
      -e MYSQL_ROOT_PASSWORD=root123 \
      -e MYSQL_DATABASE=car_rental_db \
      -p 3306:3306 \
