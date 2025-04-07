@@ -150,9 +150,9 @@ spring.datasource.url: jdbc:mysql://localhost:3306/car_rental_db
 ```bash
 docker network create car-rental-network
 
-docker run --name mysql-db --network car-rental-network -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=car_rental_db -p 3306:3306 -d mysql:8
+docker run --name mysql-db --network car-rental-network -e MYSQL_ROOT_PASSWORD=root123 -e MYSQL_DATABASE=car_rental_db -p 3306:3306 -d mysql
 
-docker run --name springboot-api --network car-rental-network -p 8081:8081 your-springboot-image
+docker run --name carrental_c --network car-rental-network -p 8081:8081 carrental-api:0.1
 ```
 ```yml
 spring.datasource.url: jdbc:mysql://mysql-db:3306/car_rental_db
