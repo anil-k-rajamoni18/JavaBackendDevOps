@@ -10,7 +10,7 @@ The default username for a MySQL Docker container is **root**, and by default, i
 
 ### 1️⃣ Create a Docker Network
 ```sh
-docker network create my-network
+docker network create car-network
 ```
 
 ### 2️⃣ Start the MySQL Container
