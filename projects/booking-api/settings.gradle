@@ -1,3 +1,32 @@
-// settings for gradle
-rootProject.name = 'booking-api'
+[
+  { "model": "Swift", "brand": "Maruti Suzuki", "pricePerDay": 1200.00, "available": true },
+  { "model": "Baleno", "brand": "Maruti Suzuki", "pricePerDay": 1400.00, "available": true },
+  { "model": "Alto", "brand": "Maruti Suzuki", "pricePerDay": 1000.00, "available": true },
+  { "model": "Creta", "brand": "Hyundai", "pricePerDay": 2500.00, "available": true },
+  { "model": "Venue", "brand": "Hyundai", "pricePerDay": 2200.00, "available": true },
+  { "model": "Verna", "brand": "Hyundai", "pricePerDay": 2300.00, "available": true },
+  { "model": "Harrier", "brand": "Tata", "pricePerDay": 2800.00, "available": true },
+  { "model": "Safari", "brand": "Tata", "pricePerDay": 3000.00, "available": true },
+  { "model": "Nexon", "brand": "Tata", "pricePerDay": 1800.00, "available": true },
+  { "model": "Kushaq", "brand": "Skoda", "pricePerDay": 2700.00, "available": true }
+]
 
+
+curl -X POST http://172.19.64.1:8081/cars \
+     -H "Content-Type: application/json" \
+     -d '{ "model": "Venue", "brand": "Hyundai", "pricePerDay": 2200.00, "available": true }'
+		 
+
+Can you reformat this notes into .md file 
+add emojis, image url where ever needed.
+Make sure keep the information same as it is.
+
+
+Give me training session in-depth notes for below concepts
+Include in short main observations & common issues/challenges at last. 
+generate notes in .md file format 
+add emojis, image url where ever needed.
+
+		 
+		 
+https://cloudnativenow.com/topics/cloudnativenetworking/understanding-kubernetes-networking-architecture/

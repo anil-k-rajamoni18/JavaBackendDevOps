@@ -30,7 +30,7 @@ docker run -d --name mysql-db \
 Run the following command to connect to the MySQL container:
 
 ```sh
-docker run -it --network my-network --rm mysql mysql -hcar-rental -uroot -p
+docker run -it --network car-network --rm mysql mysql -hmysql-db -uroot -p
 ```
 
 You will be prompted to enter the **root password** (set as `root_password` in the above example).
@@ -40,11 +40,11 @@ You will be prompted to enter the **root password** (set as `root_password` in t
 |---------|-------------|
 | `docker run` | Starts a new Docker container. |
 | `-it` | Runs the container in interactive mode (`-i` for input, `-t` for terminal access). |
-| `--network my-network` | Connects the container to an existing Docker network named `my-network`. This allows containers within the network to communicate with each other. |
+| `--network car-network` | Connects the container to an existing Docker network named `car-network`. This allows containers within the network to communicate with each other. |
 | `--rm` | Automatically removes the container once it stops to prevent unnecessary leftover containers. |
 | `mysql` | Uses the MySQL Docker image. |
 | `mysql` | The second `mysql` is the command executed inside the container, which runs the MySQL client. |
-| `-hcar-rental` | Specifies the **host** (`car-rental`), which is the hostname of the MySQL server inside the `my-network` Docker network. |
+| `-hmysql-db` | Specifies the **host** (`mysql-db`), which is the hostname of the MySQL server inside the `my-network` Docker network. |
 | `-uroot` | Logs in as the MySQL **root** user. |
 | `-p` | Prompts for the **password** (you will enter it manually after running the command). |
 
