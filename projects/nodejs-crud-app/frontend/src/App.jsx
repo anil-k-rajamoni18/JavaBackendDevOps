@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/books";
+const API_URL = "http://localhost:3000/books"; // node api endpoint
 
 function App() {
   const [books, setBooks] = useState([]);

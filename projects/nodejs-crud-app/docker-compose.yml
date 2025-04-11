@@ -5,7 +5,7 @@ services:
     image: node-backend-bookapi:0.1
     container_name: bookapi-backend
     ports:
-      - "5000:5000"  # Adjust if your backend runs on a different port
+      - "3000:3000"  # Adjust if your backend runs on a different port
     restart: always
     networks:
       - bookapi-network
@@ -14,7 +14,7 @@ services:
     image: react-ui-bookapi:0.1
     container_name: bookapi-frontend
     ports:
-      - "3000:3000"  # React app typically runs on 3000
+      - "4173:4173"  # React app typically runs on 3000
     restart: always
     depends_on:
       - backend
