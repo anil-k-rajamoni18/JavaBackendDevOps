@@ -21,6 +21,19 @@ services:
     networks:
       - bookapi-network
 
+  api:
+    image: nginx:latest
+    container_name: nginx-api
+    ports:
+      - "8000:80"
+    restart: always
+    depends_on:
+      - backend
+    volumes:
+      - ./site-content:/usr/share/nginx/html
+    networks:
+      - bookapi-network 
+
 networks:
   bookapi-network:
     driver: bridge
