@@ -1,4 +1,4 @@
-# Monitoring, Logging & Debugging 🩺📊
+# Chapter 7: Monitoring, Logging & Debugging 🩺📊
 
 Kubernetes provides powerful observability tools to monitor, log, and debug workloads. These insights are essential for keeping applications healthy and performant.
 

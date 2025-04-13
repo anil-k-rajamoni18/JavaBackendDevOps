@@ -1,4 +1,4 @@
-# Kubernetes Training - Day 2 🚀
+# Kubernetes Training - Chapter 2 🚀
 
 ## Core Kubernetes Objects & Deployments
 

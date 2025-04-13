@@ -1,4 +1,4 @@
-# Security & Role-Based Access Control (RBAC) 🔐
+# Chapter 6: Security & Role-Based Access Control (RBAC) 🔐
 
 Security in Kubernetes is a layered approach—starting from API access control to pod-level restrictions and network segmentation. Let’s break down the core security components for Day 6, with real-world context and visuals. 🛡️
 

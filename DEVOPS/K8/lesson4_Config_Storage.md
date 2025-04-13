@@ -1,5 +1,5 @@
 
-# 📦 Day 4: Kubernetes Configuration Management & Storage
+# 📦 Chapter 4: Kubernetes Configuration Management & Storage
 
 ---
 

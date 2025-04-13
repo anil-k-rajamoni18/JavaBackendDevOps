@@ -1,4 +1,4 @@
-# Kubernetes Training - Day 3 🚀
+# Kubernetes Training - Chapter 3 🚀
 
 ## Kubernetes Networking & Services 🌐
 

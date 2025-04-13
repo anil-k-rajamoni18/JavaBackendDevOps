@@ -1,3 +1,5 @@
+# 🏢 Chapter 5: Auto Scaling & Healing 
+
 ## What is Scaling? 
 Scaling is the process of dynamically adjusting computing resources to meet application demand. It comes in two primary forms:
 

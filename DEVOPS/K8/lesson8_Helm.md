@@ -1,4 +1,4 @@
-# Helm & Kubernetes Operators 📦🤖
+# Chapter 8: Helm & Kubernetes Operators 📦🤖
 
 ---
 
