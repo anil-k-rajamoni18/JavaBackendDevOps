@@ -63,6 +63,62 @@ spec:
 kubectl apply -f pod.yaml
 ```
 
+
+### 🔄 Container States
+- Containers run within Pods and follow a simpler lifecycle defined by the container runtime (like containerd)
+
+1. Waiting
+  - The container is waiting to be started. This can happen due to:
+      - Image pull delays
+      - Backoff after failures
+
+2. Running
+  - The container is executing.
+
+3. Terminated
+  - The container has stopped, either:
+    - Normally (exit code 0)
+    - With failure (non-zero exit)
+    - Or was killed (e.g., due to resource limits or kubectl delete pod)
+
+### 🔁 Pod Lifecycle
+1. Pending  
+    - The Pod is accepted by the Kubernetes system but not yet scheduled to a node or still pulling images.
+    - Includes:
+        Scheduling
+        Image pulling
+        Waiting for volume attachments
+
+2. Running
+    - The Pod has been bound to a node.
+    - All containers are created and at least one is in a Running or Started state.
+
+3. Succeeded
+    - All containers in the Pod have completed successfully (i.e., exited with status 0) and won’t be restarted.\
+
+4. Failed
+    - All containers have terminated, and at least one has failed (non-zero exit code or was killed).
+
+5. Unknown 
+    - The Pod’s state can’t be determined. Usually happens when communication with the node is lost.
+
+### ⚙️ Pod Lifecycle Events
+  - PodScheduled – Pod is assigned to a node.
+  - Pulling – Images are being pulled.
+  - Created – Containers are created.
+  - Started – Containers are running.
+  - Killing – Pod is being terminated.
+
+
+
+
+### 🔁 Restart Policies
+The behavior when containers exit depends on the Pod's restartPolicy:
+  - Always (default for Deployments): Restart container no matter what.
+  - OnFailure: Restart only if exit code ≠ 0.
+  - Never: Never restart.
+
+
 ---
 
 ## ReplicaSets & Scaling Applications 📊
