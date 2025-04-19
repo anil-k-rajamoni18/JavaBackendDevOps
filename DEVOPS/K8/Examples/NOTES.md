@@ -1,8 +1,9 @@
 1. Create a Simple HTML File
 
 2. Create a ConfigMap from Your HTML File
-    kubectl create configmap nginx-html --from-file=index.html
-
+```bash
+  kubectl create configmap nginx-html --from-file=index.html
+```
  3. Create a Deployment for Nginx
 
 ```yml

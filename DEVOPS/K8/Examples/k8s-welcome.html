@@ -40,6 +40,7 @@
 
   <div id="date">📅 Loading date and time...</div>
 
+  <p id="pod-info">📦 Pod name: <span id="pod-name">loading...</span></p>
   <script>
     function updateDateTime() {
       const now = new Date();
@@ -52,6 +53,16 @@
     // Update immediately and every second
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    fetch('/podinfo')
+          .then(response => response.text())
+          .then(name => {
+            document.getElementById('pod-name').textContent = name.trim();
+          })
+          .catch(err => {
+            document.getElementById('pod-name').textContent = 'unavailable';
+          });
+
   </script>
 </body>
 </html>
