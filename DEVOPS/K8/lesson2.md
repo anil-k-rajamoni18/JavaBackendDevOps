@@ -313,6 +313,22 @@ spec:
 kubectl apply -f statefulset.yaml
 ```
 
+🔹 How to Access ?
+- Create Service of NodePort Type 
+- Needed mysql client, if not install with following command
+```sh
+sudo apt update && sudo apt install mysql-client -y
+```
+- Get the minikude ip using
+```bash
+kubectl get nodes -o wide
+  or
+minikube ip 
+```
+- Connect to MYSQL DB (which is running inside pod (inside a container as a docker image))
+```bash
+mysql -h $(minikube ip) -P 30864 -u root -p
+```
 ---
 
 # Kubernetes (K8s) Terminologies Explained 🚀

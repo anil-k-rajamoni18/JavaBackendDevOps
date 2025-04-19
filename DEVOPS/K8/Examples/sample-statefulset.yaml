@@ -3,15 +3,20 @@ kind: StatefulSet
 metadata:
   name: mysql-statefulset
 spec:
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-statefulset
+spec:
   serviceName: "mysql"
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql #  has to match .spec.template.metadata.labels
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql #  has to match .spec.selector.matchLabels
     spec:
       containers:
       - name: mysql
@@ -21,3 +26,34 @@ spec:
           value: "root123"
         - name: MYSQL_DATABASE
           value: "test_db"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-persistent-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb-service
+  namespace: default
+spec:
+  selector:
+    app: mysql #  has to match .spec.selector.matchLabels
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+

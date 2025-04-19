@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/books"; // node api endpoint
-
+// const API_URL = "http://localhost:3000/books"; // node api endpoint
+const API_URL = "http://book-nodeapi-app-service:3000/books";  // K8s node service name
 function App() {
   const [books, setBooks] = useState([]);
   const [form, setForm] = useState({ title: "", author: "", id: null });
