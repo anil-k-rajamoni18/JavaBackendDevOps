@@ -148,7 +148,16 @@ spec:
     Automatically updates to 4 CPU, 8GB RAM
 
 ---
+## 🧠 Summary
 
+| Feature               | HPA                         | VPA                                  |
+|-----------------------|------------------------------|----------------------------------------|
+| Scales pods           | ✅ Yes                      | ❌ No                                 |
+| Adjusts CPU/Memory    | ❌ No                       | ✅ Yes                                |
+| Replaces pods?        | ❌ No (just more/less)      | ✅ Yes (for new resources)            |
+
+
+---
 ## 🧮 Cluster Autoscaler for Dynamic Scaling
 
 The **Cluster Autoscaler** automatically adjusts the size of the node pool when pods fail to schedule or nodes are underutilized.
@@ -378,6 +387,22 @@ spec:
 
 ### 3. 📦 DaemonSet
 - Ensures a copy of a pod runs on **every (or selected)** node.
+- Useful for: log agents, monitoring agents, network tools, storage daemons, etc.
+- Pods are automatically added to new nodes
+- DaemonSet = 🧲 "One pod per node"
+- Great for monitoring, logging, networking
+- Automatically adjusts as cluster nodes change
+
+### 🔥 Use Cases for DaemonSets
+
+| Tool                   | Purpose                          |
+|------------------------|----------------------------------|
+| 🐞 Fluent Bit           | Log collection per node          |
+| 📊 Prometheus Node Exporter | Node metrics                   |
+| 🔐 Falco                | Security event monitoring        |
+| 🌐 Calico               | CNI plugin (runs as DaemonSet)   |
+| 🚀 nvidia-device-plugin | GPU node support                 |
+
 
 **🔧 Usage:** For running background daemons like log collectors, monitoring agents.
 
@@ -399,7 +424,7 @@ spec:
     spec:
       containers:
       - name: fluentd
-        image: fluent/fluentd:v1.14-1
+        image: fluent/fluentd:latest
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -421,17 +446,26 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: data-migration-job
+  name: hello-job
 spec:
   template:
     spec:
       containers:
-      - name: migrator
-        image: myorg/data-migrator:1.0
-        command: ["node", "migrate.js"]
+      - name: hello
+        image: busybox
+        command: ["sh", "-c", "echo 👋 Hello from Kubernetes Job! && sleep 10"]
       restartPolicy: Never
   backoffLimit: 4
 ```
+#### 💡 Explanation of Key Fields
+| Field               | Purpose                                      |
+|---------------------|----------------------------------------------|
+| `kind: Job`         | Tells K8s this is a one-time job            |
+| `command`           | The command the container runs              |
+| `restartPolicy: Never` | Prevents re-running the same container     |
+| `backoffLimit`      | How many times to retry if it fails         |
+
+---
 
 ## 📌 Summary
 | Feature                  | Function                            | Benefit                                |
