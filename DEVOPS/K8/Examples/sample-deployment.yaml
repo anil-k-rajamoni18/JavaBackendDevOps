@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-web-server
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: nginx-web-server
@@ -22,6 +22,13 @@ spec:
         - name: podname
           mountPath: /usr/share/nginx/html/podinfo
           subPath: podname
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "25m"
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
       volumes:
         - name: html-volume
           configMap:

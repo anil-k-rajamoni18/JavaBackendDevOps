@@ -269,8 +269,10 @@ Here’s a cheat sheet of popular volume types:
 
 ### ✅ What is a StorageClass?
 
+- A StorageClass defines how a PersistentVolume (PV) should be dynamically provisioned when a PersistentVolumeClaim (PVC) requests storage.
 - Defines **how storage is provisioned dynamically**.
 - Used with cloud providers or external storage systems.
+
 
 ### 📘 Example
 
@@ -285,6 +287,9 @@ provisioner: kubernetes.io/aws-ebs
 parameters:
   type: gp2
 ```
+- provisioner:	Tells K8s which plugin to use. Here: aws-ebs (Amazon Elastic Block Store)
+- parameters.type:	gp2 is the EBS volume type (General Purpose SSD)
+
 
 **PVC using StorageClass:**
 
@@ -304,8 +309,30 @@ spec:
 
 No need to create a PV manually – it's **provisioned on-demand**.
 
----
+**Kubernetes will**:
+  See the PVC asking for 5Gi
+  Use the fast-storage StorageClass
+  Provision a gp2 SSD EBS volume
+  Mount it into your pod via the PVC
 
+---
+## 📦 Kubernetes Storage Concepts
+
+| Concept       | What it is                                       | Created by        | Purpose                     |
+|---------------|--------------------------------------------------|-------------------|-----------------------------|
+| **PV**        | The actual disk in the cluster                   | Admin or dynamic  | Provides storage            |
+| **PVC**       | A request for storage by a pod                   | User              | Claims a PV                 |
+| **StorageClass** | A template that defines how to provision a PV | Admin              | Enables dynamic provisioning |
+
+
+### 🔄 How They Work Together
+  - PVC is created by user
+  - If a matching static PV is available → it's bound
+  - Else, Kubernetes uses the storageClassName in the PVC to create a PV dynamically using a StorageClass
+  - Pod mounts the PVC to access the volume
+
+
+---
 ## 🧱 StatefulSets – For Stateful Applications
 
 ### ✅ What is a StatefulSet?

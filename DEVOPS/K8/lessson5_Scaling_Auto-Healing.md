@@ -206,20 +206,38 @@ Liveness probes restart components stuck due to deadlocks.
 
 ### 📸 Example YAML:
 ```yaml
-livenessProbe:
-  httpGet:
-    path: /healthz
-    port: 8080
-  initialDelaySeconds: 3
-  periodSeconds: 3
 readinessProbe:
   httpGet:
     path: /ready
     port: 8080
   initialDelaySeconds: 3
   periodSeconds: 3
-```
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 3
+  periodSeconds: 3
 
+```
+```
+🟢 Readiness Probe — “Am I ready to handle traffic?”
+    🔍 Kubernetes checks http://your-app:8080/ready
+    ⏳ Wait 3 seconds before the first check
+    ⏱️ Then check every 3 seconds
+    ✅ If this succeeds → App gets traffic
+    🚫 If it fails → App will not get traffic until it's ready again
+
+❤️ Liveness Probe — “Am I alive?”
+    🔍 Kubernetes checks http://your-app:8080/healthz
+    ⏳ Wait 3 seconds before the first check
+    ⏱️ Then check every 3 seconds
+    ❌ If this fails → Kubernetes will restart the container (it thinks your app is broken)
+
+In short:
+🟢 Readiness = Ready to serve users?
+❤️ Liveness = Still working or frozen?
+```
 ---
 
 ## 🛡️ Self-Healing Capabilities of Kubernetes
