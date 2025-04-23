@@ -1,7 +1,5 @@
 # Chapter 6: Security & Role-Based Access Control (RBAC) 🔐
 
-Security in Kubernetes is a layered approach—starting from API access control to pod-level restrictions and network segmentation. Let’s break down the core security components for Day 6, with real-world context and visuals. 🛡️
-
 ---
 
 ## 🧰 Kubernetes Security Best Practices
@@ -27,38 +25,93 @@ A fintech company uses namespaces to separate dev, staging, and production envir
 
 ## 🔐 Role-Based Access Control (RBAC)
 
-RBAC defines **who can do what** in the cluster.
+- RBAC defines **who can do what** in the cluster.
+- RBAC (Role-Based Access Control) is a method in Kubernetes to control who can do what within the cluster, based on their assigned roles. It provides fine-grained access control to resources.
 
-### 🔑 Key Resources:
+
+### 🔐 Key Concepts in RBAC
 - `Role` / `ClusterRole`
 - `RoleBinding` / `ClusterRoleBinding`
-
-### 📸 Example YAML:
+#### 1. Role
+- Defines a set of permissions within a namespace.
+- It grants access to resources like Pods, Services, etc.
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: dev
+  namespace: default
   name: pod-reader
 rules:
 - apiGroups: [""]
   resources: ["pods"]
   verbs: ["get", "watch", "list"]
----
+```
+
+#### 2. ClusterRole
+- Like a Role, but applies cluster-wide or to non-namespaced resources (like nodes).
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin-viewer
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list"]
+```
+
+#### 3. RoleBinding
+- Grants the permissions defined in a Role to a user or service account within a namespace.
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: read-pods
-  namespace: dev
+  name: read-pods-binding
+  namespace: default
 subjects:
 - kind: User
-  name: jane
+  name: alice
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: pod-reader
   apiGroup: rbac.authorization.k8s.io
 ```
+#### 4. ClusterRoleBinding
+- Grants a ClusterRole to a user or service account across the entire cluster.
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-access
+subjects:
+- kind: User
+  name: bob
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+#### 🧪 Testing RBAC Permissions
+- Use the following command to check if a user/service account has permission to perform an action:
+```bash
+kubectl auth can-i get pods --as alice --namespace default
+
+kubectl auth can-i get pods --as=system:serviceaccount:default:test-sa --namespace=default
+
+```
+
+## ✅ Common Use Cases
+
+| Use Case                                              | RBAC Objects Needed                                     | Scope         |
+|--------------------------------------------------------|----------------------------------------------------------|---------------|
+| Read-only access to pods in a namespace                | Role + RoleBinding                                       | Namespaced    |
+| Cluster-wide node access                               | ClusterRole + ClusterRoleBinding                         | Cluster-wide  |
+| Service account managing deployments in a namespace    | Role + RoleBinding (subject is a ServiceAccount)         | Namespaced    |
+
+---
 
 ### 🌍 Real-world Example:
 In a SaaS platform, only DevOps engineers can delete pods. RBAC ensures developers can view logs but can’t delete workloads.
@@ -132,7 +185,7 @@ spec:
 ### 🌍 Real-world Example:
 In an online banking app, only frontend pods can talk to backend pods—network policies prevent other internal services from accessing sensitive APIs.
 
-![Network Policy](https://kubernetes.io/images/docs/network-policy.png)
+![Network Policy](https://rafay.co/wp-content/uploads/2022/08/Network-Policy.jpeg)
 
 ---
 

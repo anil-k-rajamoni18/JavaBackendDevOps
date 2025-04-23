@@ -1,9 +1,5 @@
-age = 0
-if (age <= 0):
-    print("Invalid Age")
-elif (age >= 18):
-    print("You are an adult.")
-    print("True")
-else:
-    print("You are a minor.")
-    print("False")
+def even_or_odd(num: int) -> str:
+    if num < 0:
+        return f"Can't test for negative number: {num}"
+    else:
+        return "even" if num % 2 == 0 else "odd"

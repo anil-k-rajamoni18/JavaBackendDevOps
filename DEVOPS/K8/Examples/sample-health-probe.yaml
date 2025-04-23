@@ -37,24 +37,24 @@ spec:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 90
+          initialDelaySeconds: 180
           periodSeconds: 20
         livenessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 90
+          initialDelaySeconds: 180
           periodSeconds: 20
         volumeMounts:
         - name: log-volume
           mountPath: /app/logs
         resources:
           requests:
-            memory: "200Mi"
-            cpu: "200m"
-          limits:
             memory: "256Mi"
-            cpu: "250m"
+            cpu: "256m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
       volumes:
         - name: log-volume
           persistentVolumeClaim:

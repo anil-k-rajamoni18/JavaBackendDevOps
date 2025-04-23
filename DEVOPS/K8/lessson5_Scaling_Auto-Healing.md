@@ -343,7 +343,7 @@ Node Failure 🖥️➡️❌
     Control plane detects node unreachable
     ReplicaSet spins up pods on healthy nodes
 
-### 3. 📦 StatefulSet
+### 2. 📦 StatefulSet
 - Used for stateful applications that require stable identity and storage.
 - Provides ordered, graceful deployment and scaling.
 

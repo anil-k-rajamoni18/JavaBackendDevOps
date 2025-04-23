@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   const bigArray = [];
-  for (let i = 0; i < 10000000; i++) {
+  for (let i = 0; i < 1000000; i++) {
     bigArray.push("This is a memory stress test " + i);
   }
   res.send('Memory stress triggered 🚀');
