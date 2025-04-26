@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: car-rental-api
+  namespace: dev-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: car-rental-api
+  template:
+    metadata:
+      labels:
+        app: car-rental-api
+    spec:
+      containers:
+      - name: car-rental-api
+        image: akumarraj/apps:car-rental-api-0.1
+        ports:
+        - containerPort: 8081
+        env:
+        - name: DB_URL
+          value: jdbc:mysql://mysqldb-service:3306/car_rental_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          failureThreshold: 3
+        volumeMounts:
+        - name: logs-car-rental-api
+          mountPath: /app/logs
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 3000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+            - KILL
+      volumes:
+      - name: logs-car-rental-api
+        persistentVolumeClaim:
+          claimName: api-logs-pvc

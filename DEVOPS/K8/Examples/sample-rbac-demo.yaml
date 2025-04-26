@@ -16,9 +16,23 @@ metadata:
     role-name: pod-reader
 rules:
 - apiGroups: [""]
-  resources: ["pods"]
+  resources: ["pods","deployment"]
   verbs: ["get", "watch", "list"]
 
+---
+## Role-2
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-deploy-writer
+  labels:
+    role-name: pod-deploy-writer
+rules:
+- apiGroups: [""]
+  resources: ["pods","deployment","service", "ingress"]
+  verbs: ["get", "watch", "list", "create", "delete"]
+  
 ---
 ## Bind the Role to the ServiceAccount
 apiVersion: rbac.authorization.k8s.io/v1
@@ -33,6 +47,22 @@ subjects:
 roleRef:
   kind: Role
   name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+## RoleBinding-2
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-deploy-writer-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: demo-sa
+  namespace: default
+roleRef:
+  kind: Role
+  name: pod-deploy-writer
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -66,7 +96,7 @@ roleRef:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: my-sa-token
+  name: demo-sa-token
   annotations:
     kubernetes.io/service-account.name: demo-sa
 type: kubernetes.io/service-account-token

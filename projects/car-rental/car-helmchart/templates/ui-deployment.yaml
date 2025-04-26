@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: car-rental-ui-app
+  namespace: dev-ns
+  labels:
+    app: car-rental-ui-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: car-rental-ui-app
+  template:
+    metadata:
+      labels:
+        app: car-rental-ui-app
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: car-rental-ui-container
+        image: akumarraj/apps:car-rental-ui-0.1
+        ports:
+        - containerPort: 4173
+        env:
+        - name: REACT_APP_API_URL
+          value: http://car-rental-api-service:8081
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 4173
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 4173
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true

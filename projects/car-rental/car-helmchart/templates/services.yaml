@@ -1,0 +1,48 @@
+# MYSQL SERVICE 
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb-service
+  namespace: dev-ns
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+  type: ClusterIP
+
+---
+### API SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: car-rental-api-service
+  namespace: dev-ns
+spec:
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: car-rental-api
+  type: ClusterIP
+
+
+---
+# UI SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: car-rental-ui-service
+  namespace: dev-ns
+  labels:
+    app: car-rental-ui-app
+spec:
+  type: NodePort
+  selector:
+    app: car-rental-ui-app
+  ports:
+  - protocol: TCP
+    port: 4173
+    targetPort: 4173
+    nodePort: 30081
+

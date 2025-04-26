@@ -1,0 +1,28 @@
+## MYSQL PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: car-rental
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+## API PVC 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: api-logs-pvc
+  namespace: dev-ns
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard

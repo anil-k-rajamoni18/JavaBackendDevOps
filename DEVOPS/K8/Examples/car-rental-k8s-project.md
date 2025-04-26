@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8
+        image: mysql:latest
         env:
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
@@ -116,7 +116,7 @@ spec:
                 name: mysql-secret
                 key: mysql-password
           - name: MYSQL_DATABASE
-            value: carrental
+            value: car_rental_db
         ports:
           - containerPort: 3306
         volumeMounts:
@@ -152,7 +152,7 @@ metadata:
   name: carrental-api
   namespace: car-rental
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: carrental-api
@@ -162,23 +162,60 @@ spec:
         app: carrental-api
     spec:
       containers:
-      - name: carrental
-        image: your-dockerhub-username/carrental-api:latest
-        ports:
-          - containerPort: 8080
-        env:
-          - name: DB_HOST
-            value: mysql-service
-          - name: DB_USER
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: mysql-user
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: mysql-password
+        - name: carrental
+          image: akumarraj/apps:car-rentalapi-spring-0.1
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: DB_HOST
+              value: mysql-service
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+            - name: DB_DATABASE
+              value: car_rental_db
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            failureThreshold: 3
+
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 3000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+                - KILL
 ---
 apiVersion: v1
 kind: Service

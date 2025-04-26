@@ -2,7 +2,7 @@ spring:
   application.name: car-rental-api
   datasource:
     #url: jdbc:mysql://localhost:3306/car_rental_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    url: jdbc:mysql://mysql-db:3306/car_rental_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://mysqldbserver:3306/car_rental_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: root123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,3 +16,13 @@ spring:
 
 server:
   port: ${PORT:8081}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics  # Or use '*' to expose all
+  endpoint:
+    health:
+      show-details: always
