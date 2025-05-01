@@ -1,0 +1,17 @@
+replicaCount: 1
+image:
+  repository: nginx
+  tag: latest
+configmap:
+  name: nginx-html-config
+  content: |
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+      </head>
+      <body>
+        <h1>Welcome to DEV Environment! 👨‍💻</h1>
+        <p>This is served from the DEV ConfigMap.</p>
+      </body>
+    </html>

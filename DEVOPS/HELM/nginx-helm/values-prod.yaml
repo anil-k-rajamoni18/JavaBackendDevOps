@@ -1,0 +1,13 @@
+replicaCount: 2
+configmap:
+  content: |
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8"> 
+      </head>
+      <body>
+        <h1>Welcome to Production! 🚀</h1>
+        <p>This is served from the Production ConfigMap.</p>
+      </body>
+    </html>

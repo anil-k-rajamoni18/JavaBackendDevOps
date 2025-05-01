@@ -1,8 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: api-to-mysql
-  namespace: dev-ns
+  name: {{ include "car-rental-api.fullname" . }}-mysql-policy
 spec:
   podSelector:
     matchLabels:
