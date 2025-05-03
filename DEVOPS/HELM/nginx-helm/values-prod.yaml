@@ -1,5 +1,6 @@
 replicaCount: 2
 configmap:
+  name: nginx-html-config-prod
   content: |
     <!DOCTYPE html>
     <html>

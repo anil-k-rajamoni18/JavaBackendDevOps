@@ -1,4 +1,4 @@
-# Chapter 7: Monitoring, Logging & Debugging 🩺📊
+# Monitoring, Logging & Debugging 🩺📊
 
 Kubernetes provides powerful observability tools to monitor, log, and debug workloads. These insights are essential for keeping applications healthy and performant.
 
@@ -16,6 +16,29 @@ Logging and monitoring in Kubernetes help you:
 - **Metrics** reflect system health like CPU/memory usage.
 - Logs are ephemeral; centralized logging is key.
 
+
+**Monitoring(Metrics)**: 
+- involves tracking system metrics like CPU usage, memory usage, and network performance. 
+- Provides alerts based on predefined thresholds and conditions
+- Monitoring tells us what is happening.
+
+**Logging(Logs)**: 
+- involves the collection of log data from various components of a system.
+- Logging explains why it is happening.
+
+**Tracing(Traces)**: 
+- involves tracking the flow of a request or transaction as it moves through different services and components within a system.
+- Tracing shows how it is happening.
+
+### 🤔 Why Monitoring?
+- Monitoring helps us keep an eye on our systems to ensure they are working properly.
+- Purpose: maintaining the health, performance, and security of IT environments.
+- It enables early detection of issues, ensuring that they can be addressed before causing significant downtime or data loss.
+- We use monitoring to:
+    - Detect Problems Early
+    - Measure Performance
+    - Ensure Availability
+
 ### 🌍 Real-world Example:
 An e-commerce platform uses metrics to autoscale services during flash sales and logs to trace order issues.
 
@@ -23,9 +46,11 @@ An e-commerce platform uses metrics to autoscale services during flash sales and
 
 ## Metrics vs Monitoring
 
-Metrics are measurements or data points that tell you what is happening. For example, the number of steps you walk each day, your heart rate, or the temperature outside—these are all metrics.
+- Metrics are measurements or data points that tell you what is happening. 
+  - For example, the number of steps you walk each day, your heart rate, or the temperature outside—these are all metrics.
 
-Monitoring is the process of keeping an eye on these metrics over time to understand what’s normal, identify changes, and detect problems. It's like watching your step count daily to see if you're meeting your fitness goal or checking your heart rate to make sure it's in a healthy range.
+- Monitoring is the process of keeping an eye on these metrics over time to understand what’s normal, identify changes, and detect problems. 
+  - It's like watching your step count daily to see if you're meeting your fitness goal or checking your heart rate to make sure it's in a healthy range.
 
 ## 🚀 Prometheus
 - Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.

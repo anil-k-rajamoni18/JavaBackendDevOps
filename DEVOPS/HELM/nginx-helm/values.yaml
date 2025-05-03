@@ -1,7 +1,9 @@
 replicaCount: 1
+
 image:
   repository: nginx
   tag: latest
+
 configmap:
   name: nginx-html-config
   content: |
