@@ -33,7 +33,7 @@
 ### Push Image to ECR
 1. **Authenticate** Docker to ECR:
    ```bash
-   aws ecr get-login-password | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+    aws ecr get-login-password | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
     ```
 
 2. Build and tag Docker image:
@@ -43,12 +43,12 @@
     ```
 3. Push to ECR:
     ```bash
-        docker push <account-id>.dkr.ecr.<region>.amazonaws.com/my-repo:latest
+    docker push <account-id>.dkr.ecr.<region>.amazonaws.com/my-repo:latest
     ```
 
 4. Pull Image from ECR
     ```bash
-        docker pull <account-id>.dkr.ecr.<region>.amazonaws.com/my-repo:latest
+    docker pull <account-id>.dkr.ecr.<region>.amazonaws.com/my-repo:latest
     ```
 
 ### 🔒 Security

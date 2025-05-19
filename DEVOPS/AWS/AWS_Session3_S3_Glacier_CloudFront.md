@@ -1,18 +1,77 @@
 
-# 🧠 S3 + Glacier + CloudFront + Storage Classes**
+# 🧠 S3 + Glacier + CloudFront + Storage Classes
 
 ## ☁️ **1. S3 Buckets & Objects**
 
 ### What is S3?
 - **Amazon S3 (Simple Storage Service)** is a scalable object storage service where you can store data (files) as **objects** within **buckets**.
+- It's designed to store and retrieve any amount of data, from anywhere on the web, at any time.
+- Amazon S3 was officially launched on March 14, 2006. 
+- It was one of the first AWS services to be made publicly available and marked the beginning of Amazon's cloud services for external customers.
+
+
+### 🧪 Use Cases
+- Website hosting
+- Data backup and disaster recovery
+- Media hosting and streaming
+- Big data analytics
+- Static content storage for web and mobile apps
 
 ### Key Concepts:
 - **Bucket**: Container for storing objects (files).
-- **Object**: The actual data you upload (e.g., images, videos, documents).
+- **Object**: The actual data you upload (e.g., images, videos, documents). The files/data themselves, stored with metadata and a unique key.
 - **Region**: Buckets are tied to specific AWS regions for data locality and latency.
+- **Storage Classes**: Different cost/performance tiers (e.g., Standard, Glacier).
+
+### Objects
+- Fundamental entities stored in S3.
+- Each object consists of:
+  - **Data**
+  - **Key** (unique identifier)
+  - **Metadata**
+  - **Version ID** (if versioning is enabled)
+
 
 ### 💼 **Real-World Example**:
 > A photographer stores **high-resolution photos** on S3. Each photo is an **object**, and all the photos are stored in an S3 **bucket** called `photo-archive`.
+
+---
+
+### ✅  Types of Buckets 
+
+#### 1. General Purpose Bucket
+- What it is: The standard, traditional S3 bucket.
+- Use case: Storing any type of object (files, images, videos, backups, etc.).
+- Structure: Flat structure (no real folders, just keys that look like paths).
+- Access: Can be private, public, versioned, encrypted, etc.
+- Good for: Almost any cloud storage use case — it's the most flexible and widely used.
+- *Think of it like a regular file cabinet where you put all kinds of documents.*
+
+#### 2. Directory Bucket (Newer feature, launched in 2023)
+-What it is: A special type of S3 bucket that supports strong consistency and a hierarchical namespace (more like a real file system).
+- Use case: Designed for applications that need fast file lookups, such as big data workloads or cloud-native file systems.
+- Key Features:
+    - POSIX-like directory structure.
+    - Faster access to objects in deeply nested "folders".
+    - Works better with tools that expect traditional file systems.
+- Good for: Analytics, AI/ML workloads, or replacing on-premise file systems.
+- *Think of it like a smart folder system where the structure really matters and access is faster.*
+
+#### 3. Amazon S3 Table Buckets 
+- Used to store tabular data and metadata for analytics.
+- AWS automatically maintains them to reduce storage costs.
+- Supports Apache Iceberg and integrates with:
+    - AWS Glue Data Catalog
+    - Amazon S3 Tables Catalog
+    - Iceberg REST endpoint for open-source query engines
+
+- Private by default – access must be explicitly granted.
+- Controlled using IAM policies (resource-based + identity-based).
+- Unique ARN format:
+```ruby
+arn:aws:s3tables:Region:AccountID:bucket/bucket-name
+```
+- Limit: 10 table buckets per AWS Region (can request more).
 
 ---
 
@@ -133,6 +192,31 @@ Access Site via S3 URL
 
 ---
 
+
+## 🔍 AWS S3 vs EBS vs EFS – Key Differences
+| Feature            | **Amazon S3**                                                            | **Amazon EBS**                                             | **Amazon EFS**                                   |
+| ------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------- | ------------------------------------------------ |
+| **Type**           | Object Storage                                                           | Block Storage                                              | File Storage                                     |
+| **Use Case**       | Store any amount of unstructured data like images, videos, backups, logs | Attach storage to EC2 instances (like a virtual hard disk) | Shared file system across multiple EC2 instances |
+| **Data Access**    | Via web/API, SDKs, HTTP(S)                                               | Only from attached EC2 instances                           | Mountable via NFS                                |
+| **Persistence**    | Persistent & independent of compute                                      | Persistent but tied to EC2 availability zone               | Persistent & shared across AZs                   |
+| **Performance**    | High throughput for large files                                          | High IOPS for transactional workloads                      | Good for parallel access workloads               |
+| **Storage Format** | Objects (key-value pairs)                                                | Blocks (like hard drive sectors)                           | Files and directories                            |
+| **Examples**       | Backup, static website hosting, data lakes                               | Databases, file systems, boot volumes                      | Web servers, shared project files                |
+| **Pricing**        | Pay per GB + requests                                                    | Pay per provisioned GB + IOPS                              | Pay per GB + throughput & IOPS                   |
+| **Availability**   | Regional                                                                 | Availability Zone-specific                                 | Regional (Multi-AZ)                              |
+| **Scalability**    | Automatically scales                                                     | Manual sizing                                              | Automatically scales                             |
+
+
+#### 🧠 Quick Summary:
+S3 is for scalable object storage, ideal for backup, media, and web content.
+
+EBS is like a virtual hard drive, best for OS, databases, and apps requiring fast read/write.
+
+EFS is a shared file system, useful for multi-user file access across EC2 instances.
+
+--- 
+
 ## 🧑‍💻 **7. Hands-On Labs**
 
 ### 🔹 A. Host a Static Website on S3
@@ -156,19 +240,5 @@ Access Site via S3 URL
 
 ### 💼 **Real-World Example**:
 > A **personal blog** is hosted on **S3**, and as traffic increases, you set up **CloudFront** to ensure users from different countries load the site quickly.
-
----
-
-## ✅ **Day 3 Summary Checklist**
-
-| ✅ Task | Status |
-|--------|--------|
-| S3 Buckets and Objects | ✔️ |
-| Versioning & Lifecycle | ✔️ |
-| S3 Storage Classes | ✔️ |
-| Bucket Policies, ACLs, Encryption | ✔️ |
-| Static Website Hosting on S3 | ✔️ |
-| CloudFront Setup | ✔️ |
-| Hands-on Completion | ✔️ |
 
 ---
